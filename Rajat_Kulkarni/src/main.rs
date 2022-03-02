@@ -42,7 +42,7 @@ mod other {
         education: Option<String>,
         experience: Option<String>*/
     }
-    
+
 
     /*
     -- dashboard() --
@@ -145,4 +145,8 @@ fn main() {
 
 
 // TESTING
-    
+
+/*
+TEST 1:
+    Test the function to etc etc
+*/ 
