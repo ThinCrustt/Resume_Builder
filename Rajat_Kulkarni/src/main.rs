@@ -9,18 +9,29 @@ References:
 [3] https://blog.logrocket.com/template-rendering-in-rust/
 
 */
-//askjdhsakhdj
+
+
 #![feature(proc_macro_hygiene, decl_macro)]
 #[macro_use] extern crate rocket;
 
+
 use rocket::response::Redirect;
 use rocket_contrib::templates::Template;
-use std::collections::HashMap;
+use std::{collections::HashMap, thread::current};
+use chrono::Utc;
+use std::fmt;
 
 
 mod other {
     use rocket_contrib::templates::Template;
     use std::collections::HashMap;
+
+
+    #[derive(serde::Serialize)]
+    struct CurrentInfo {
+        date: &'static str
+    }
+
 
     #[derive(serde::Serialize)]
     struct userInfo {
@@ -31,6 +42,7 @@ mod other {
         education: Option<String>,
         experience: Option<String>*/
     }
+    
 
     /*
     -- dashboard() --
@@ -73,14 +85,55 @@ pub fn index() -> &'static str {
 
 #[get("/")]
 fn index() -> Template {
-    let context: HashMap<&str, &str> = [("name", "Jonathan")]
-    .iter().cloned().collect();
+    
+    let mut current_time = chrono::offset::Local::now();
+    let mut a = current_time.to_string(); 
+    print!("ORIGINAL: {}", current_time);
+    let mut s_slice: &str = &a[..];
+    let mut sb: Vec<&str>  = s_slice.split(' ').collect();
+    let mut t = sb.get(0).unwrap();
+    let context: HashMap<&str, &str> = [("name", "Jonathan"), ("time", t)].iter().cloned().collect();
+    
     Template::render("index", &context)
 }
 
 fn main() {
 
+    let dt = Utc::now();
+    let timestamp: i64 = dt.timestamp();
+
+    //println!("Current timestamp is {}", timestamp);
+    //println!("{:?}", chrono::offset::Local::now());
+
     
+    print!("****************");
+    let mut current_time = chrono::offset::Local::now();
+
+    let mut a = current_time.to_string(); 
+    print!("ORIGINAL: {}", current_time);
+    let mut s_slice: &str = &a[..];
+    let mut sb: Vec<&str>  = s_slice.split(' ').collect();
+
+
+    for s in sb {
+        println!("\n{}\n", s)
+    }
+    
+
+    let mut strings = "bananas,apples,pear";
+    let mut sa = strings.split(",");
+    print!("****************");
+
+    /*for s in current_time {
+        print!("{}", s);
+    }*/
+    //print!("{}", current_time);
+
+
+
+    //current_time.split_whitespace();
+  
+
 
     rocket::ignite()
     .mount("/", routes![index, other::dashboard])
