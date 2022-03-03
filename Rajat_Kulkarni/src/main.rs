@@ -7,6 +7,7 @@ References:
 [1] https://www.linode.com/docs/guides/build-a-website-using-rust-and-the-rocket-web-framework/
 [2] https://medium.com/@james_32022/rocket-frontend-templates-and-static-assets-5b6d04243a08
 [3] https://blog.logrocket.com/template-rendering-in-rust/
+[4] https://github.com/SergioBenitez/Rocket/tree/v0.4
 
 */
 
@@ -83,6 +84,13 @@ mod other {
 
 }
 
+
+/*
+CUSTOM HANDLEBARS HELPERES
+    - wow_helper() obtained from Sergio Benitez [4]
+    - 
+*/
+
 fn wow_helper(
     h: &Helper,
     _: &Handlebars,
@@ -93,12 +101,30 @@ fn wow_helper(
     if let Some(param) = h.param(0) {
         out.write("<b><i>")?;
         out.write(&param.value().render())?;
+        //out.write("</b></i>")?;
+    }
+
+    Ok(())
+}
+
+fn on_create_click(
+    h: &Helper,
+    _: &Handlebars,
+    _: &Context,
+    _: &mut RenderContext,
+    out: &mut dyn Output
+) -> HelperResult {
+    if let Some(param) = h.param(0) {
         out.write("</b></i>")?;
     }
 
     Ok(())
 }
 
+
+
+
+// Obtained from Sergio Benitez [4]
 #[catch(404)]
 fn not_found(req: &Request) -> Template {
     let mut map = std::collections::HashMap::new();
