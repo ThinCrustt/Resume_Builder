@@ -9,10 +9,9 @@ edition = "2021"
 rocket = "0.4.10"
 serde = { version = "1.0", features = ["derive"] }
 chrono = "0.4"
+handlebars = "4.2.1"
 
 [dependencies.rocket_contrib]
 version = "*"
 default-features = false
 features = ["handlebars_templates", "tera_templates"]
-
-

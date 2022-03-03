@@ -12,19 +12,29 @@ References:
 
 
 #![feature(proc_macro_hygiene, decl_macro)]
+
 #[macro_use] extern crate rocket;
 
 
 use rocket::response::Redirect;
-use rocket_contrib::templates::Template;
+//use rocket_contrib::templates::Template;
 use std::{collections::HashMap, thread::current};
 use chrono::Utc;
 use std::fmt;
+use rocket::Request;
+//use handlebars::{Helper, Handlebars, Context, RenderContext, Output, HelperResult, JsonRender};
+
+use rocket_contrib :: templates :: {Template, handlebars};
+use crate::handlebars::{Helper, Handlebars, Context, RenderContext, Output, HelperResult, RenderError, JsonRender};
+
+
 
 
 mod other {
     use rocket_contrib::templates::Template;
     use std::collections::HashMap;
+    //use handlebars::{Helper, Handlebars, Context, RenderContext, Output, HelperResult, JsonRender};
+
 
 
     #[derive(serde::Serialize)]
@@ -69,19 +79,44 @@ mod other {
             experience: Some("F".to_string())*/
         })
     }
+
+
 }
 
-/*#[get("/")]
-pub fn index() -> &'static str {
-    "MAIN PAGE - 
-    Add more description
-    to
-    increase
-    line
-    count
-    like
-    this"
-}*/
+fn wow_helper(
+    h: &Helper,
+    _: &Handlebars,
+    _: &Context,
+    _: &mut RenderContext,
+    out: &mut dyn Output
+) -> HelperResult {
+    if let Some(param) = h.param(0) {
+        out.write("<b><i>")?;
+        out.write(&param.value().render())?;
+        out.write("</b></i>")?;
+    }
+
+    Ok(())
+}
+
+#[catch(404)]
+fn not_found(req: &Request) -> Template {
+    let mut map = std::collections::HashMap::new();
+    map.insert("path", req.uri().path());
+    Template::render("error/404", &map)
+}
+
+
+fn rocket() -> rocket::Rocket {
+    rocket::ignite()
+        .mount("/", routes![index, other::dashboard])
+        .register(catchers![not_found])
+        .attach(Template::custom(|engines| {
+            engines.handlebars.register_helper("wow", Box::new(wow_helper));
+        }))
+}
+
+
 
 #[get("/")]
 fn index() -> Template {
@@ -96,6 +131,9 @@ fn index() -> Template {
     
     Template::render("index", &context)
 }
+
+
+
 
 fn main() {
 
@@ -132,15 +170,17 @@ fn main() {
 
 
     //current_time.split_whitespace();
-  
 
-
-    rocket::ignite()
+    /*rocket::ignite()
     .mount("/", routes![index, other::dashboard])
     .attach(Template::fairing())
-    .launch();    
+    .launch();    */
+
+
+    rocket().launch();
+
     
-    //rocket::ignite().mount("/", routes![index, other::about, other::dashboard]).launch();
+    
 }
 
 
