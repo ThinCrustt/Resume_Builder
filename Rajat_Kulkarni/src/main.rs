@@ -13,7 +13,6 @@ References:
 
 
 #![feature(proc_macro_hygiene, decl_macro)]
-
 #[macro_use] extern crate rocket;
 
 
@@ -24,18 +23,26 @@ use chrono::Utc;
 use std::fmt;
 use rocket::Request;
 //use handlebars::{Helper, Handlebars, Context, RenderContext, Output, HelperResult, JsonRender};
-
 use rocket_contrib :: templates :: {Template, handlebars};
 use crate::handlebars::{Helper, Handlebars, Context, RenderContext, Output, HelperResult, RenderError, JsonRender};
+use std::sync::atomic::AtomicUsize;
+use rocket::State;
 
 
+/*
+WRITE 
+COMMENTS
+HERE
+*/
+struct HitCount {
+    count: AtomicUsize
+}
 
 
 mod other {
     use rocket_contrib::templates::Template;
     use std::collections::HashMap;
     //use handlebars::{Helper, Handlebars, Context, RenderContext, Output, HelperResult, JsonRender};
-
 
 
     #[derive(serde::Serialize)]
@@ -45,6 +52,8 @@ mod other {
 
 
     #[derive(serde::Serialize)]
+
+    // WRITE COMMENT HERE
     struct userInfo {
         first_name: &'static str,
         last_name: &'static str,
@@ -80,8 +89,38 @@ mod other {
             experience: Some("F".to_string())*/
         })
     }
+}
 
+/*
+WRITE 
+COMMENTS
+HERE
+*/
 
+/*#[get("/count")]
+fn count(hit_count: State<HitCount>) -> String {
+    let current_count = hit_count.count.load(Ordering::Relaxed);
+    format!("Number of visits: {}", current_count)
+}*/
+
+ /*
+WRITE 
+COMMENTS
+HERE
+*/
+
+#[get("/")]
+fn index() -> Template {
+    
+    let mut current_time = chrono::offset::Local::now();
+    let mut a = current_time.to_string(); 
+    //print!("ORIGINAL: {}", current_time);
+    let mut s_slice: &str = &a[..];
+    let mut sb: Vec<&str>  = s_slice.split(' ').collect();
+    let mut t = sb.get(0).unwrap();
+    let context: HashMap<&str, &str> = [("name", "Jonathan"), ("time", t)].iter().cloned().collect();
+    
+    Template::render("index", &context)
 }
 
 
@@ -101,11 +140,18 @@ fn wow_helper(
     if let Some(param) = h.param(0) {
         out.write("<b><i>")?;
         out.write(&param.value().render())?;
-        //out.write("</b></i>")?;
+        out.write("</b></i>")?;
+        
     }
 
     Ok(())
 }
+
+/*
+WRITE 
+COMMENTS
+HERE
+*/
 
 fn on_create_click(
     h: &Helper,
@@ -121,10 +167,14 @@ fn on_create_click(
     Ok(())
 }
 
+/*
+WRITE 
+COMMENTS// Obtained from Sergio Benitez [4]
 
+Error catcher: _________
+HERE
+*/
 
-
-// Obtained from Sergio Benitez [4]
 #[catch(404)]
 fn not_found(req: &Request) -> Template {
     let mut map = std::collections::HashMap::new();
@@ -132,68 +182,28 @@ fn not_found(req: &Request) -> Template {
     Template::render("error/404", &map)
 }
 
+/*
+WRITE 
+COMMENTS
+HERE
+*/
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
         .mount("/", routes![index, other::dashboard])
         .register(catchers![not_found])
+        .manage(HitCount {count: AtomicUsize::new(0) })
         .attach(Template::custom(|engines| {
             engines.handlebars.register_helper("wow", Box::new(wow_helper));
         }))
 }
 
 
-
-#[get("/")]
-fn index() -> Template {
-    
-    let mut current_time = chrono::offset::Local::now();
-    let mut a = current_time.to_string(); 
-    print!("ORIGINAL: {}", current_time);
-    let mut s_slice: &str = &a[..];
-    let mut sb: Vec<&str>  = s_slice.split(' ').collect();
-    let mut t = sb.get(0).unwrap();
-    let context: HashMap<&str, &str> = [("name", "Jonathan"), ("time", t)].iter().cloned().collect();
-    
-    Template::render("index", &context)
-}
-
-
-
-
 fn main() {
-
-    let dt = Utc::now();
-    let timestamp: i64 = dt.timestamp();
-
-    //println!("Current timestamp is {}", timestamp);
-    //println!("{:?}", chrono::offset::Local::now());
-
-    
-    print!("****************");
-    let mut current_time = chrono::offset::Local::now();
-
-    let mut a = current_time.to_string(); 
-    print!("ORIGINAL: {}", current_time);
-    let mut s_slice: &str = &a[..];
-    let mut sb: Vec<&str>  = s_slice.split(' ').collect();
-
-
-    for s in sb {
-        println!("\n{}\n", s)
-    }
-    
-
-    let mut strings = "bananas,apples,pear";
-    let mut sa = strings.split(",");
-    print!("****************");
-
     /*for s in current_time {
         print!("{}", s);
     }*/
     //print!("{}", current_time);
-
-
 
     //current_time.split_whitespace();
 
@@ -202,17 +212,73 @@ fn main() {
     .attach(Template::fairing())
     .launch();    */
 
-
     rocket().launch();
-
-    
-    
 }
 
 
 // TESTING
 
+macro_rules! dispatch {
+    ($method:expr, $path:expr, $test_fn:expr) => ({
+        let client = Client::new(rocket()).unwrap();
+        $test_fn(&client, client.req($method, $path).dispatch());
+    })
+}
+
+
+// Imports specific to testing:
+
+//use super::{rocket, TemplateContext};
+
+use rocket::local::{Client, LocalResponse};
+use rocket::http::Method::*;
+use rocket::http::Status;
+
+
 /*
 TEST 1:
     Test the function to etc etc
 */ 
+
+#[test]
+fn test_root() {
+    // Check that the redirect works.
+    for method in &[Get, Head] {
+        dispatch!(*method, "/", |_: &Client, mut response: LocalResponse| {
+            assert_eq!(response.status(), Status::SeeOther);
+            assert!(response.body().is_none());
+
+            let location: Vec<_> = response.headers().get("Location").collect();
+            assert_eq!(location, vec!["/hello/Unknown"]);
+        });
+    }
+
+    // Check that other request methods are not accepted (and instead caught).
+    for method in &[Post, Put, Delete, Options, Trace, Connect, Patch] {
+        dispatch!(*method, "/", |client: &Client, mut response: LocalResponse| {
+            let mut map = ::std::collections::HashMap::new();
+            map.insert("path", "/");
+            let expected = Template::show(client.rocket(), "error/404", &map).unwrap();
+
+            assert_eq!(response.status(), Status::NotFound);
+            assert_eq!(response.body_string(), Some(expected));
+        });
+    }
+}
+
+
+/*
+Test 4: Tests the error catcher
+*/
+
+#[test]
+fn test_404() {
+    dispatch!(Get, "/hello/", |client: &Client, mut response: LocalResponse| {
+        let mut map = ::std::collections::HashMap::new();
+        map.insert("path", "/hello/");
+
+        let expected = Template::show(client.rocket(), "error/404", &map).unwrap();
+        assert_eq!(response.status(), Status::NotFound);
+        assert_eq!(response.body_string(), Some(expected));
+    });
+}
