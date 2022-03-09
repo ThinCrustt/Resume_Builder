@@ -5,17 +5,38 @@
   </head>
   <body>
     <button> CREATE</button>
-    <section id="custom-helper">
-      <p>Also, check {{ wow "sdfsdf" }} (custom helper) out!</p>
-    </section>
+    
 
-  <div class="panel-body" id="chat-bill">	
-  	<form id="messageForm">
-	   <input id="nameInput" type="hidden" class="input-medium" value="Macbook" />
-	   <input id="messageInput" type="text" class="form-control" placeholder="Digite uma mensagem..." />
-	   <input type="submit" value="Send" />
-  	</form>
-  </div>
+    <section id="form-creation-module">
+        <h1>Resume Creation</h1>
+
+        <form method="POST" action="/dashboard"  >
+
+        <fieldset>
+
+          <legend>Your Information:</legend>
+          
+          <div class="row">
+            <div class="col">
+                <input name="Name" type="text" value="Name" />
+                <input name="Description" type="text" value="Skills" />
+            </div>
+          </div>
+
+        </fieldset>      
+
+        <br />
+
+        <input type="submit" value="Submit" class="is-full-width" />
+      </form>
+
+      </section>
+
+      <section>
+        <li>
+          
+        </li>
+      </section>
 
   </body>
 </html>

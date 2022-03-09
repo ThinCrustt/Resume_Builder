@@ -1,0 +1,12 @@
+/Users/rajat/Desktop/PSU/Year1/Term2/CS_510_Rust/rust_final_project/Rajat_Kulkarni/target/debug/deps/ignore-d7dc29d298796edf.rmeta: /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/lib.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/default_types.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/dir.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/gitignore.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/overrides.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/pathutil.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/types.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/walk.rs
+
+/Users/rajat/Desktop/PSU/Year1/Term2/CS_510_Rust/rust_final_project/Rajat_Kulkarni/target/debug/deps/ignore-d7dc29d298796edf.d: /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/lib.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/default_types.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/dir.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/gitignore.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/overrides.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/pathutil.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/types.rs /Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/walk.rs
+
+/Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/lib.rs:
+/Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/default_types.rs:
+/Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/dir.rs:
+/Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/gitignore.rs:
+/Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/overrides.rs:
+/Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/pathutil.rs:
+/Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/types.rs:
+/Users/rajat/.cargo/registry/src/github.com-1ecc6299db9ec823/ignore-0.4.18/src/walk.rs:

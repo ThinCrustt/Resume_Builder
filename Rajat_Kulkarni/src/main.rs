@@ -10,14 +10,12 @@ References:
 [4] https://github.com/SergioBenitez/Rocket/tree/v0.4
 
 */
-
-
+ 
 #![feature(proc_macro_hygiene, decl_macro)]
 #[macro_use] extern crate rocket;
 
 
 use rocket::response::Redirect;
-//use rocket_contrib::templates::Template;
 use std::{collections::HashMap, thread::current};
 use chrono::Utc;
 use std::fmt;
@@ -27,6 +25,8 @@ use rocket_contrib :: templates :: {Template, handlebars};
 use crate::handlebars::{Helper, Handlebars, Context, RenderContext, Output, HelperResult, RenderError, JsonRender};
 use std::sync::atomic::AtomicUsize;
 use rocket::State;
+use rocket::request::Form;
+
 
 
 /*
@@ -42,7 +42,6 @@ struct HitCount {
 mod other {
     use rocket_contrib::templates::Template;
     use std::collections::HashMap;
-    //use handlebars::{Helper, Handlebars, Context, RenderContext, Output, HelperResult, JsonRender};
 
 
     #[derive(serde::Serialize)]
@@ -53,61 +52,50 @@ mod other {
 
     #[derive(serde::Serialize)]
 
-    // WRITE COMMENT HERE
     struct userInfo {
         first_name: &'static str,
         last_name: &'static str,
-        /*phone_number: u128,
-        skills: Option<String>,
-        education: Option<String>,
-        experience: Option<String>*/
     }
 
 
-    /*
-    -- dashboard() --
-
-    - routes to /dashboard
-    - renders the dashboard.hbs handlebars template
-
-    TO DO:
-    - have a form in dashboard.hbs that opens when the "create resume" button is pressed.
-      The state from that form should be passed as context into the dashboard.hbs template
-    */
-
     #[get("/dashboard")]
     pub fn dashboard() -> Template {
-        //let context: HashMap<&str, &str> = [("name", "Jonathan")]
-        //.iter().cloned().collect();
-
         Template::render("dashboard", &userInfo {
             first_name: "john",
             last_name: "Marty",
-            /*phone_number: 19999999999,
-            skills: Some("F".to_string()),
-            education: Some("F".to_string()),
-            experience: Some("F".to_string())*/
         })
     }
 }
 
-/*
-WRITE 
-COMMENTS
-HERE
-*/
 
-/*#[get("/count")]
-fn count(hit_count: State<HitCount>) -> String {
-    let current_count = hit_count.count.load(Ordering::Relaxed);
-    format!("Number of visits: {}", current_count)
-}*/
+#[derive(FromForm)]
+struct Task {
+    Name: String,
+    Description: String,
+}
 
- /*
-WRITE 
-COMMENTS
-HERE
-*/
+#[post("/dashboard", data = "<task>")]
+fn publish_to_dashboard(task: Form<Task>) -> Template{ 
+    print!("HIT");
+    print!("{}", task.Name);
+    print!("{}", task.Description);
+    let mut context = HashMap::new();
+    let name = task.Name.clone();
+    let description = task.Description.clone();
+
+    context.insert(
+        "Name".to_string(),
+        name,
+    );
+
+    context.insert(
+        "Description".to_string(),
+        description,
+    );
+
+    Template::render("dashboard", &context)
+}
+
 
 #[get("/")]
 fn index() -> Template {
@@ -124,11 +112,6 @@ fn index() -> Template {
 }
 
 
-/*
-CUSTOM HANDLEBARS HELPERES
-    - wow_helper() obtained from Sergio Benitez [4]
-    - 
-*/
 
 fn wow_helper(
     h: &Helper,
@@ -147,11 +130,6 @@ fn wow_helper(
     Ok(())
 }
 
-/*
-WRITE 
-COMMENTS
-HERE
-*/
 
 fn on_create_click(
     h: &Helper,
@@ -167,14 +145,6 @@ fn on_create_click(
     Ok(())
 }
 
-/*
-WRITE 
-COMMENTS// Obtained from Sergio Benitez [4]
-
-Error catcher: _________
-HERE
-*/
-
 #[catch(404)]
 fn not_found(req: &Request) -> Template {
     let mut map = std::collections::HashMap::new();
@@ -182,11 +152,6 @@ fn not_found(req: &Request) -> Template {
     Template::render("error/404", &map)
 }
 
-/*
-WRITE 
-COMMENTS
-HERE
-*/
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
@@ -195,28 +160,30 @@ fn rocket() -> rocket::Rocket {
         .manage(HitCount {count: AtomicUsize::new(0) })
         .attach(Template::custom(|engines| {
             engines.handlebars.register_helper("wow", Box::new(wow_helper));
-        }))
+        }))       
 }
 
 
 fn main() {
-    /*for s in current_time {
-        print!("{}", s);
-    }*/
-    //print!("{}", current_time);
-
-    //current_time.split_whitespace();
-
-    /*rocket::ignite()
-    .mount("/", routes![index, other::dashboard])
+    rocket::ignite()
+    .mount("/", routes![index, publish_to_dashboard, other::dashboard])
     .attach(Template::fairing())
-    .launch();    */
+    .launch();    
 
-    rocket().launch();
+    //rocket().launch();
 }
 
 
-// TESTING
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+
+// --------------------- TESTING -----------------------
 
 macro_rules! dispatch {
     ($method:expr, $path:expr, $test_fn:expr) => ({
