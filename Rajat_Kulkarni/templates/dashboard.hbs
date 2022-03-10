@@ -14,12 +14,15 @@
 
         <fieldset>
 
-          <legend>Your Information:</legend>
+          <legend>Please enter the following information:</legend>
           
           <div class="row">
             <div class="col">
-                <input name="Name" type="text" value="Name" />
-                <input name="Description" type="text" value="Skills" />
+                <input name="name" type="text" value="Name" />
+                <input name="description" type="text" value="Description" />
+                <input name="phone_number" type="text" value="Phone Number" />
+                <input name="skills" type="text" value="Skills" />
+                <input name="company" type="text" value="Company" />                
             </div>
           </div>
 
@@ -33,9 +36,12 @@
       </section>
 
       <section>
-        <li>
-          
-        </li>
+        <h2>Resumes</h2>
+        <ul>
+          <fieldset>
+            {{> resume}}
+          </fieldset>
+        </ul>
       </section>
 
   </body>

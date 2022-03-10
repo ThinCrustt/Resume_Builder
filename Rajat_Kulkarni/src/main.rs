@@ -15,12 +15,12 @@ References:
 #[macro_use] extern crate rocket;
 
 
+use diesel::sql_types::Bool;
 use rocket::response::Redirect;
 use std::{collections::HashMap, thread::current};
 use chrono::Utc;
 use std::fmt;
 use rocket::Request;
-//use handlebars::{Helper, Handlebars, Context, RenderContext, Output, HelperResult, JsonRender};
 use rocket_contrib :: templates :: {Template, handlebars};
 use crate::handlebars::{Helper, Handlebars, Context, RenderContext, Output, HelperResult, RenderError, JsonRender};
 use std::sync::atomic::AtomicUsize;
@@ -29,13 +29,16 @@ use rocket::request::Form;
 
 
 
-/*
-WRITE 
-COMMENTS
-HERE
-*/
-struct HitCount {
-    count: AtomicUsize
+struct Resume {
+    name: String,
+    description: String,
+    phone_number: String,
+    skills: String,
+    company: String,
+}
+
+struct ResumeCollection {
+    list_of_resumes: Vec<Resume>
 }
 
 
@@ -68,30 +71,86 @@ mod other {
 }
 
 
+#[get("/count")]
+fn count(resume_collection: State<ResumeCollection>) -> ResumeCollection {
+    let mut retrieved_resume_collection = Vec::<ResumeCollection>::new();
+    let mut temp_resume: Resume;
+
+    for i in (0, resume_collection.list_of_resumes.len()) {
+        
+    }
+    temp_resume.name = resume_collection.list_of_resumes.to_string();
+    temp_resume.description = "h".to_string();
+    temp_resume.phone_number = "h".to_string();
+    temp_resume.skills = "h".to_string();
+    temp_resume.company = "h".to_string();
+    
+}
+
 #[derive(FromForm)]
 struct Task {
-    Name: String,
-    Description: String,
+    name: String,
+    description: String,
+    phone_number: String,
+    skills: String,
+    company: String,
 }
+
+
+fn validate_user_input(task: Form<Task>) -> bool {
+    let name = task.name.clone();
+    let description = task.description.clone();
+    let phone_number = task.phone_number.clone();
+    let skills = task.skills.clone();
+    let company = task.company.clone();  
+
+    name != "name" && description != "description" && "phone_number" != phone_number
+       && skills != "skills" && company != "company"
+}
+
 
 #[post("/dashboard", data = "<task>")]
 fn publish_to_dashboard(task: Form<Task>) -> Template{ 
     print!("HIT");
-    print!("{}", task.Name);
-    print!("{}", task.Description);
+    print!("{}", task.name);
+    print!("{}", task.description);
+    print!("{}", task.phone_number);
+    print!("{}", task.skills);
+    print!("{}", task.company);
+    
     let mut context = HashMap::new();
-    let name = task.Name.clone();
-    let description = task.Description.clone();
+    let name = task.name.clone();
+    let description = task.description.clone();
+    let phone_number = task.phone_number.clone();
+    let skills = task.skills.clone();
+    let company = task.company.clone();
 
-    context.insert(
-        "Name".to_string(),
-        name,
-    );
-
-    context.insert(
-        "Description".to_string(),
-        description,
-    );
+    if validate_user_input(task) {
+        context.insert(
+            "Name".to_string(),
+            name,
+        );
+    
+        context.insert(
+            "Description".to_string(),
+            description,
+        );
+    
+        context.insert(
+            "Phone_Number".to_string(),
+            phone_number,
+        );
+    
+        context.insert(
+            "Skills".to_string(),
+            skills,
+        );
+    
+        context.insert(
+            "Company".to_string(),
+            company,
+        );
+    }
 
     Template::render("dashboard", &context)
 }
@@ -99,18 +158,16 @@ fn publish_to_dashboard(task: Form<Task>) -> Template{
 
 #[get("/")]
 fn index() -> Template {
-    
-    let mut current_time = chrono::offset::Local::now();
-    let mut a = current_time.to_string(); 
-    //print!("ORIGINAL: {}", current_time);
-    let mut s_slice: &str = &a[..];
-    let mut sb: Vec<&str>  = s_slice.split(' ').collect();
-    let mut t = sb.get(0).unwrap();
-    let context: HashMap<&str, &str> = [("name", "Jonathan"), ("time", t)].iter().cloned().collect();
+    let current_time = chrono::offset::Local::now();
+    let a = current_time.to_string(); 
+    let s_slice = &a[..];
+    let sb: Vec<&str>  = s_slice.split(' ').collect();
+    let date = sb.get(0).unwrap();
+    let date2 = date.clone();
+    let context: HashMap<&str, &str> = [("name", "Jonathan"), ("date", date2)].iter().cloned().collect();
     
     Template::render("index", &context)
 }
-
 
 
 fn wow_helper(
@@ -131,20 +188,6 @@ fn wow_helper(
 }
 
 
-fn on_create_click(
-    h: &Helper,
-    _: &Handlebars,
-    _: &Context,
-    _: &mut RenderContext,
-    out: &mut dyn Output
-) -> HelperResult {
-    if let Some(param) = h.param(0) {
-        out.write("</b></i>")?;
-    }
-
-    Ok(())
-}
-
 #[catch(404)]
 fn not_found(req: &Request) -> Template {
     let mut map = std::collections::HashMap::new();
@@ -157,31 +200,28 @@ fn rocket() -> rocket::Rocket {
     rocket::ignite()
         .mount("/", routes![index, other::dashboard])
         .register(catchers![not_found])
-        .manage(HitCount {count: AtomicUsize::new(0) })
+        .manage(ResumeCollection { list_of_resumes: Vec::<Resume>::new() })
         .attach(Template::custom(|engines| {
             engines.handlebars.register_helper("wow", Box::new(wow_helper));
+       
         }))       
 }
 
 
 fn main() {
-    rocket::ignite()
-    .mount("/", routes![index, publish_to_dashboard, other::dashboard])
-    .attach(Template::fairing())
-    .launch();    
+    let helper_needed = 0;
 
-    //rocket().launch();
+    if helper_needed == 0 {
+        rocket::ignite()
+        .mount("/", routes![index, publish_to_dashboard, other::dashboard])
+        .attach(Template::fairing())
+        .launch();    
+    }
+    else {
+        rocket().launch();
+    }
 }
 
-
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
 
 // --------------------- TESTING -----------------------
 
