@@ -15,16 +15,15 @@ References:
 #[macro_use] extern crate rocket;
 
 
-use diesel::sql_types::Bool;
-use rocket::response::Redirect;
-use std::{collections::HashMap, thread::current};
-use chrono::Utc;
-use std::fmt;
+//use diesel::sql_types::Bool;
+//use rocket::response::Redirect;
+use std::collections::HashMap;
+
+
 use rocket::Request;
 use rocket_contrib :: templates :: {Template, handlebars};
 use crate::handlebars::{Helper, Handlebars, Context, RenderContext, Output, HelperResult, RenderError, JsonRender};
-use std::sync::atomic::AtomicUsize;
-use rocket::State;
+
 use rocket::request::Form;
 
 
@@ -71,13 +70,13 @@ mod other {
 }
 
 
-#[get("/count")]
+/*#[get("/count")]
 fn count(resume_collection: State<ResumeCollection>) -> ResumeCollection {
     let mut retrieved_resume_collection = Vec::<ResumeCollection>::new();
     let mut temp_resume: Resume;
 
     for i in (0, resume_collection.list_of_resumes.len()) {
-        
+
     }
     temp_resume.name = resume_collection.list_of_resumes.to_string();
     temp_resume.description = "h".to_string();
@@ -85,7 +84,7 @@ fn count(resume_collection: State<ResumeCollection>) -> ResumeCollection {
     temp_resume.skills = "h".to_string();
     temp_resume.company = "h".to_string();
     
-}
+}*/
 
 #[derive(FromForm)]
 struct Task {
@@ -163,8 +162,8 @@ fn index() -> Template {
     let s_slice = &a[..];
     let sb: Vec<&str>  = s_slice.split(' ').collect();
     let date = sb.get(0).unwrap();
-    let date2 = date.clone();
-    let context: HashMap<&str, &str> = [("name", "Jonathan"), ("date", date2)].iter().cloned().collect();
+    //let date2 = date.clone();
+    let context: HashMap<&str, &str> = [("name", "Jonathan")/*, ("date", date2)*/].iter().cloned().collect();
     
     Template::render("index", &context)
 }
