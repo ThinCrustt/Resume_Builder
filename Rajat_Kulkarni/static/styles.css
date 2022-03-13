@@ -21,9 +21,13 @@ section{
 }
 section#navigation{
     padding: 0;
+    background-color: darkolivegreen;
 }
 section#banner{
     height: calc(90vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 section:nth-of-type(odd){
     background-color: #FCFDFE;
@@ -38,7 +42,6 @@ section:nth-of-type(even){
     align-items: center;
     justify-content: space-between;
     padding: 0.1rem 1rem 0 1rem;
-    box-shadow: 0 2px 16px 0 rgb(0 0 0 / 16%);
 }
 #logo{
     cursor: pointer;
@@ -61,10 +64,11 @@ li, a, button {
 
 .item a {
     transition: all 0.3 ease 0s;
+    color: white;
 }
 
 .item a:hover, .highlight {
-color: #e31b6d;
+color:black;
 }
 
 #banner-content{
@@ -97,8 +101,8 @@ p{
     margin: 16px 0 64px 0;
     font-size: 1.6em;
     width: 350px;
-    background-color: #14856e;
-    border-color: #14856e;
+    background-color: darkolivegreen;
+    border-color: darkolivegreen;
     height: 60px;
     text-align: center;
 
@@ -112,11 +116,14 @@ p{
     margin: 16px 0 64px 0;
     font-size: 1.3rem;
     width: 250px;
-    background-color: #14856e;
-    border-color: #14856e;
+    background-color: darkolivegreen;
+    border-color: darkolivegreen;
     height: 55px;
     text-align: center;
 }
+.btn:hover{
+    color:black;
+    }
 
 #footnote{
 
@@ -127,7 +134,6 @@ p{
 }
 
 /* Dashboard styles */
-
 #form-information-text{
     display: flex;
     flex-direction: column;
@@ -171,7 +177,7 @@ fieldset{
     justify-content: center;
 }
 .category{
-    background-color: #2e2e2e;
+    background-color: darkolivegreen;
     color: white;
     text-align: center;
     display: flex;
