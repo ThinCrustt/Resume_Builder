@@ -187,3 +187,49 @@ fieldset{
     align-items: center;
     width: 8%;
 }
+/* -------------- */
+/* Create resume */
+/* -------------- */
+
+section#resume{
+    padding: 0.5rem 16rem;
+}
+
+.res{
+    padding: 0 8rem;
+}
+
+.res-small{
+    padding-left: 1.1rem;
+    padding-top: 1rem;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+
+
+.flex-col{
+    display: flex;
+    flex-direction: column;
+}
+
+.justify-sb{
+    justify-content: space-between;
+}
+
+.grey-background{
+    background-color: #363C46;
+    color: white;
+}
+
+#resume-header{
+    padding: 1.2rem;
+}
+
+.vertical-content-15{
+    margin-left: 15rem
+}
+.vertical-content-9{
+    margin-left: 9rem

@@ -4,43 +4,78 @@
     </head>
 
     <body>
-        First Name:
-        {{First_name}}
-        Last Name:
-        {{Last_name}}
-        Phone Number:
-        {{Phone_number}}
-        Email:
-        {{Email}}
-        Linkedin:
-        {{Linkedin}}
-        City:
-        {{City}}
-        State:
-        {{State}}
-        Zip Code:
-        {{Zip_code}}
-        Employer:
-        {{Employer}}
-        Start Date:
-        {{Start_date}}
-        End Date:
-        {{End_date}}
-        Description:
-        {{Description}}
-        School:
-        {{School}}
-        GPA:
-        {{Gpa}}
-        Field of Study:
-        {{Field_of_study}}
-        Graduation Date:
-        {{Graduation_date}}
-        Languages:
-        {{Languages}}
-        Softwares:
-        {{Softwares}}
-        Other Tools:
-        {{Other_tools}}
+        <section id="resume">
+                <div id="resume-header" class="flex-col grey-background res">
+                    <div class="flex-col">
+                        <h2>{{First_name}} {{Last_name}}</h2>
+                        <h3>{{Job_title}}</h3>
+                    </div>
+                    <div class="flex-row justify-sb">
+                        <div class="flex-col">
+                            <p>{{Email}}</p>
+                            <p>{{Linkedin}}</p>
+                        </div>
+                        <div class="flex-col">
+                            <p>{{City}}, {{State}}</p>
+                            <p>{{Phone_number}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="resume-edu" class="res-small">
+                    <div>
+                        <h3>Education</h3>
+                        <div class="flex-row">
+                            <div class="flex-row">
+                                <span>{{Graduation_date}}</span>
+                            </div>
+                            <div class="flex-col vertical-content-15">
+                                <p>{{School}}</p>
+                                <p>{{Field_of_study}}</p>
+                                <p>{{Gpa}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="resume-exp" class="res-small">
+                    <div>
+                        <h3>Experience</h3>
+                        <div class="flex-row">
+                            <div class="flex-row">
+                                <span>{{Start_date}}</span>
+                                <span>-</span>
+                                <span>{{End_date}}</span>
+                            </div>
+                            <div class="flex-col vertical-content-9">
+                                <p>{{Job_title}}</p>
+                                <p>{{Employer}}</p>
+                                <p>{{Description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="resume-skills" class="res-small">
+                    <div>
+                        <h3>Skills</h3>
+                        <div class="flex-col">
+                            <div class="flex-row">
+                                <p>Languages</p>
+                                <p style="margin-left: 13.5rem;">{{Languages}}</p>
+                            </div>
+                            <div class="flex-row">
+                                <p>Softwares</p>
+                                <p style="margin-left: 14rem;">{{Softwares}}</p>
+                            </div>
+                            <div class="flex-row">
+                                <p>Other Tools</p>
+                                <p style="margin-left: 13rem;">{{Other_tools}}</p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </section>
     </body>
 </html>
