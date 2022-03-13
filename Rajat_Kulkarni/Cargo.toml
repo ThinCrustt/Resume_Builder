@@ -14,8 +14,9 @@ chrono = "0.4"
 handlebars = "4.2.1"
 diesel = { version = "1.4.4", features = ["postgres"] }
 dotenv = "0.15.0"
+harmandeep = {path = "harmandeep"}
 
 [dependencies.rocket_contrib]
 version = "*"
 default-features = false
-features = ["handlebars_templates", "tera_templates"]
+features = ["handlebars_templates", "tera_templates","serve"]

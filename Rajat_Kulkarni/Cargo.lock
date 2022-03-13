@@ -504,6 +504,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "harmandeep"
+version = "0.1.0"
+
+[[package]]
 name = "hashbrown"
 version = "0.11.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1178,6 +1182,7 @@ dependencies = [
  "diesel",
  "dotenv",
  "handlebars 4.2.1",
+ "harmandeep",
  "rocket",
  "rocket_contrib",
  "serde",

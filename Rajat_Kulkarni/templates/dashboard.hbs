@@ -1,49 +1,37 @@
 <!doctype html>
 <html>
-  <head>
-    <title>DASHBOARD</title>
-  </head>
+  {{> head}}
   <body>
-    <button> CREATE</button>
-    
-
-    <section id="form-creation-module">
-        <h1>Resume Creation</h1>
-
-        <form method="POST" action="/dashboard"  >
-
-        <fieldset>
-
-          <legend>Please enter the following information:</legend>
-          
-          <div class="row">
-            <div class="col">
-                <input name="name" type="text" value="Name" />
-                <input name="description" type="text" value="Description" />
-                <input name="phone_number" type="text" value="Phone Number" />
-                <input name="skills" type="text" value="Skills" />
-                <input name="company" type="text" value="Company" />                
-            </div>
-          </div>
-
-        </fieldset>      
-
-        <br />
-
-        <input type="submit" value="Submit" class="is-full-width" />
-      </form>
-
+    <main>
+      <section id="navigation">
+          {{> navbar}} 
       </section>
-
+      <section id="form-creation-module">
+        <div id="form-information-text">
+          <h2>Let's Get Started</h2>
+          <p>Please enter the following information:</p>
+        </div>
+        
+        <form method="POST" action="/dashboard"  >
+          {{> personal}}  
+          {{> experience}}   
+          {{> education}}  
+          {{> skills}}
+        <br />
+        <div class="btn-container">
+            <input type="submit" value="Submit" class="btn-small" />
+        </div>
+      </form>
+      </section>
       <section>
-        <h2>Resumes</h2>
+        <h2>Resume</h2>
         <ul>
           <fieldset>
             {{> resume}}
           </fieldset>
         </ul>
       </section>
-
+    </main>
   </body>
 </html>
     

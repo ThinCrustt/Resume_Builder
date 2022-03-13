@@ -10,10 +10,11 @@ References:
 [4] https://github.com/SergioBenitez/Rocket/tree/v0.4
 
 */
- 
+
 #![feature(proc_macro_hygiene, decl_macro)]
 #[macro_use] extern crate rocket;
 
+extern crate harmandeep;
 
 //use diesel::sql_types::Bool;
 //use rocket::response::Redirect;
@@ -23,16 +24,14 @@ use std::collections::HashMap;
 use rocket::Request;
 use rocket_contrib :: templates :: {Template, handlebars};
 use crate::handlebars::{Helper, Handlebars, Context, RenderContext, Output, HelperResult, RenderError, JsonRender};
-
+use rocket_contrib::serve::StaticFiles;
 use rocket::request::Form;
-
-
 
 struct Resume {
     name: String,
-    description: String,
+    lastname: String,
     phone_number: String,
-    skills: String,
+    email: String,
     company: String,
 }
 
@@ -79,9 +78,9 @@ fn count(resume_collection: State<ResumeCollection>) -> ResumeCollection {
 
     }
     temp_resume.name = resume_collection.list_of_resumes.to_string();
-    temp_resume.description = "h".to_string();
+    temp_resume.lastname = "h".to_string();
     temp_resume.phone_number = "h".to_string();
-    temp_resume.skills = "h".to_string();
+    temp_resume.email = "h".to_string();
     temp_resume.company = "h".to_string();
     
 }*/
@@ -89,22 +88,22 @@ fn count(resume_collection: State<ResumeCollection>) -> ResumeCollection {
 #[derive(FromForm)]
 struct Task {
     name: String,
-    description: String,
+    lastname: String,
     phone_number: String,
-    skills: String,
+    email: String,
     company: String,
 }
 
 
 fn validate_user_input(task: Form<Task>) -> bool {
     let name = task.name.clone();
-    let description = task.description.clone();
+    let lastname = task.lastname.clone();
     let phone_number = task.phone_number.clone();
-    let skills = task.skills.clone();
+    let email = task.email.clone();
     let company = task.company.clone();  
 
-    name != "name" && description != "description" && "phone_number" != phone_number
-       && skills != "skills" && company != "company"
+    name != "name" && lastname != "lastname" && "phone_number" != phone_number
+       && email != "email" && company != "company"
 }
 
 
@@ -112,16 +111,16 @@ fn validate_user_input(task: Form<Task>) -> bool {
 fn publish_to_dashboard(task: Form<Task>) -> Template{ 
     print!("HIT");
     print!("{}", task.name);
-    print!("{}", task.description);
+    print!("{}", task.lastname);
     print!("{}", task.phone_number);
-    print!("{}", task.skills);
+    print!("{}", task.email);
     print!("{}", task.company);
     
     let mut context = HashMap::new();
     let name = task.name.clone();
-    let description = task.description.clone();
+    let lastname = task.lastname.clone();
     let phone_number = task.phone_number.clone();
-    let skills = task.skills.clone();
+    let email = task.email.clone();
     let company = task.company.clone();
 
     if validate_user_input(task) {
@@ -131,8 +130,8 @@ fn publish_to_dashboard(task: Form<Task>) -> Template{
         );
     
         context.insert(
-            "Description".to_string(),
-            description,
+            "LastName".to_string(),
+            lastname,
         );
     
         context.insert(
@@ -141,8 +140,8 @@ fn publish_to_dashboard(task: Form<Task>) -> Template{
         );
     
         context.insert(
-            "Skills".to_string(),
-            skills,
+            "Email".to_string(),
+            email,
         );
     
         context.insert(
@@ -194,9 +193,10 @@ fn not_found(req: &Request) -> Template {
     Template::render("error/404", &map)
 }
 
-
+ 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
+        .mount("/static", StaticFiles::from("static"))
         .mount("/", routes![index, other::dashboard])
         .register(catchers![not_found])
         .manage(ResumeCollection { list_of_resumes: Vec::<Resume>::new() })
@@ -213,6 +213,7 @@ fn main() {
     if helper_needed == 0 {
         rocket::ignite()
         .mount("/", routes![index, publish_to_dashboard, other::dashboard])
+        .mount("/static", StaticFiles::from("static"))
         .attach(Template::fairing())
         .launch();    
     }

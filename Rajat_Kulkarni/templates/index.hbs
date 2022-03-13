@@ -1,10 +1,31 @@
 <!doctype html>
-<html>
-    <head>
-    </head>
-
+<html lang="en">
+    {{> head}}
     <body>
-        {{> header}}
+        <main>
+            <section id="navigation">
+                {{> navbar}} 
+            </section>
+            <section id="banner">
+                <div id="banner-content">
+                    <div id="banner-content-text">
+                        <h1>Build a Professional Resume</h1>
+                        <p>Create your resume with our resume builder</p>
+                        <a href="/dashboard" class="btn">Get Started</a>
+                    </div>
+                    <div id="banner-content-img">
+                        <img src="static/banner-pic.png" width="550">
+                    </div>
+                </div>
+            </section>
+        </main>
         
     </body>
+    <footer>
+        <section>
+            <div id="footnote">
+                © 2021 Designed And Built by <span class="highlight"> Rajat Kulkarni & Harmandeep Singh</span>
+            </div>
+        </section>
+    </footer>
 </html>
