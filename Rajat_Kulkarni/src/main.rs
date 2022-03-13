@@ -12,59 +12,36 @@ References:
 */
 
 #![feature(proc_macro_hygiene, decl_macro)]
-#[macro_use] extern crate rocket;
+#[macro_use]
+extern crate rocket;
 
 extern crate harmandeep;
-
+use harmandeep::Resume;
+use harmandeep::Task;
 //use diesel::sql_types::Bool;
 //use rocket::response::Redirect;
 use std::collections::HashMap;
 
-
-use rocket::Request;
-use rocket_contrib :: templates :: {Template, handlebars};
-use crate::handlebars::{Helper, Handlebars, Context, RenderContext, Output, HelperResult, RenderError, JsonRender};
-use rocket_contrib::serve::StaticFiles;
+use crate::handlebars::{
+    Context, Handlebars, Helper, HelperResult, JsonRender, Output, RenderContext, RenderError,
+};
 use rocket::request::Form;
-
-struct Resume {
-    first_name: String,
-    last_name: String,
-    phone_number: String,
-    email: String,
-    linkedin: String,
-    city: String,
-    state: String,
-    zip_code: String,
-    job_title: String,
-    employer: String,
-    start_date: String,
-    end_date: String,
-    description: String,
-    school: String,
-    gpa: String,
-    field_of_study: String,
-    graduation_date: String,
-    languages: String,
-    softwares: String,
-    other_tools: String,
-}
+use rocket::Request;
+use rocket_contrib::serve::StaticFiles;
+use rocket_contrib::templates::{handlebars, Template};
 
 struct ResumeCollection {
-    list_of_resumes: Vec<Resume>
+    list_of_resumes: Vec<Resume>,
 }
-
 
 mod other {
     use rocket_contrib::templates::Template;
     use std::collections::HashMap;
 
-
     #[derive(serde::Serialize)]
     struct CurrentInfo {
-        date: &'static str
+        date: &'static str,
     }
-
 
     #[derive(serde::Serialize)]
 
@@ -73,16 +50,47 @@ mod other {
         last_name_a: &'static str,
     }
 
-
     #[get("/dashboard")]
     pub fn dashboard() -> Template {
-        Template::render("dashboard", &userInfo {
-            first_name_a: "john",
-            last_name_a: "Marty",
-        })
+        Template::render(
+            "dashboard",
+            &userInfo {
+                first_name_a: "john",
+                last_name_a: "Marty",
+            },
+        )
+    }
+    #[get("/resume")]
+    pub fn resume() -> Template {
+        Template::render(
+            "resume",
+            &userInfo {
+                first_name_a: "john",
+                last_name_a: "Marty",
+            },
+        )
+    }
+    #[get("/error_page")]
+    pub fn error_page() -> Template {
+        Template::render(
+            "error_page",
+            &userInfo {
+                first_name_a: "john",
+                last_name_a: "Marty",
+            },
+        )
+    }
+    #[get("/about")]
+    pub fn about() -> Template {
+        Template::render(
+            "about",
+            &userInfo {
+                first_name_a: "john",
+                last_name_a: "Marty",
+            },
+        )
     }
 }
-
 
 /*#[get("/count")]
 fn count(resume_collection: State<ResumeCollection>) -> ResumeCollection {
@@ -97,63 +105,10 @@ fn count(resume_collection: State<ResumeCollection>) -> ResumeCollection {
     temp_resume.phone_number = "h".to_string();
     temp_resume.email = "h".to_string();
     temp_resume.company = "h".to_string();
-    
+
 }*/
-
-#[derive(FromForm)]
-struct Task {
-    first_name: String,
-    last_name: String,
-    phone_number: String,
-    email: String,
-    linkedin: String,
-    city: String,
-    state: String,
-    zip_code: String,
-    job_title: String,
-    employer: String,
-    start_date: String,
-    end_date: String,
-    description: String,
-    school: String,
-    gpa: String,
-    field_of_study: String,
-    graduation_date: String,
-    languages: String,
-    softwares: String,
-    other_tools: String,
-}
-
-
-fn validate_user_input(task: Form<Task>) -> bool {
-    let first_name = task.first_name.clone();
-    let last_name = task.last_name.clone();
-    let phone_number = task.phone_number.clone();
-    let email = task.email.clone();
-    let linkedin = task.linkedin.clone();  
-    let city = task.city.clone(); 
-    let state = task.state.clone();
-    let zip_code = task.zip_code.clone();  
-    let job_title = task.job_title.clone(); 
-    let employer = task.employer.clone(); 
-    let start_date = task.start_date.clone(); 
-    let end_date = task.end_date.clone(); 
-    let description = task.description.clone(); 
-    let school = task.school.clone(); 
-    let gpa = task.gpa.clone(); 
-    let field_of_study = task.field_of_study.clone(); 
-    let graduation_date = task.graduation_date.clone(); 
-    let languages = task.languages.clone(); 
-    let softwares = task.softwares.clone(); 
-    let other_tools = task.other_tools.clone(); 
-
-    first_name != "first name" && last_name != "last name" && "phone_number" != phone_number
-       && email != "email" 
-}
-
-
 #[post("/dashboard", data = "<task>")]
-fn publish_to_dashboard(task: Form<Task>) -> Template{ 
+fn publish_to_resume(task: Form<Task>) -> Template {
     print!("HIT");
     print!("{}", task.first_name);
     print!("{}", task.last_name);
@@ -176,152 +131,74 @@ fn publish_to_dashboard(task: Form<Task>) -> Template{
     print!("{}", task.softwares);
     print!("{}", task.other_tools);
 
-    
     let mut context = HashMap::new();
     let first_name = task.first_name.clone();
     let last_name = task.last_name.clone();
     let phone_number = task.phone_number.clone();
     let email = task.email.clone();
-    let linkedin = task.linkedin.clone();  
-    let city = task.city.clone(); 
+    let linkedin = task.linkedin.clone();
+    let city = task.city.clone();
     let state = task.state.clone();
-    let zip_code = task.zip_code.clone();  
-    let job_title = task.job_title.clone(); 
-    let employer = task.employer.clone(); 
-    let start_date = task.start_date.clone(); 
-    let end_date = task.end_date.clone(); 
-    let description = task.description.clone(); 
-    let school = task.school.clone(); 
-    let gpa = task.gpa.clone(); 
-    let field_of_study = task.field_of_study.clone(); 
-    let graduation_date = task.graduation_date.clone(); 
-    let languages = task.languages.clone(); 
-    let softwares = task.softwares.clone(); 
-    let other_tools = task.other_tools.clone(); 
+    let zip_code = task.zip_code.clone();
+    let job_title = task.job_title.clone();
+    let employer = task.employer.clone();
+    let start_date = task.start_date.clone();
+    let end_date = task.end_date.clone();
+    let description = task.description.clone();
+    let school = task.school.clone();
+    let gpa = task.gpa.clone();
+    let field_of_study = task.field_of_study.clone();
+    let graduation_date = task.graduation_date.clone();
+    let languages = task.languages.clone();
+    let softwares = task.softwares.clone();
+    let other_tools = task.other_tools.clone();
 
-    if validate_user_input(task) {
-        context.insert(
-            "First_name".to_string(),
-            first_name,
-        );
-    
-        context.insert(
-            "Last_name".to_string(),
-            last_name,
-        );
-    
-        context.insert(
-            "Phone_number".to_string(),
-            phone_number,
-        );
-    
-        context.insert(
-            "Email".to_string(),
-            email,
-        );
-    
-        context.insert(
-            "Linkedin".to_string(),
-            linkedin,
-        );
-        context.insert(
-            "City".to_string(),
-            city,
-        );
-        context.insert(
-            "State".to_string(),
-            state,
-        );
-        context.insert(
-            "Zip_code".to_string(),
-            zip_code,
-        );
-        context.insert(
-            "Job_title".to_string(),
-            job_title,
-        );
-        context.insert(
-            "Employer".to_string(),
-            employer,
-        );
-        context.insert(
-            "Start_date".to_string(),
-            start_date,
-        );
-        context.insert(
-            "End_date".to_string(),
-            end_date,
-        );
-        context.insert(
-            "Description".to_string(),
-            description,
-        );
-        context.insert(
-            "School".to_string(),
-            school,
-        );
-        context.insert(
-            "Gpa".to_string(),
-            gpa,
-        );
-        context.insert(
-            "Field_of_study".to_string(),
-            field_of_study,
-        );
-        context.insert(
-            "Graduation_date".to_string(),
-            graduation_date,
-        );
-        context.insert(
-            "Languages".to_string(),
-            languages,
-        );
-        context.insert(
-            "Softwares".to_string(),
-            softwares,
-        );
-        context.insert(
-            "Other_tools".to_string(),
-            other_tools,
-        );
+    if harmandeep::validate_user_input(task) {
+        context.insert("First_name".to_string(), first_name);
 
+        context.insert("Last_name".to_string(), last_name);
+
+        context.insert("Phone_number".to_string(), phone_number);
+
+        context.insert("Email".to_string(), email);
+
+        context.insert("Linkedin".to_string(), linkedin);
+        context.insert("City".to_string(), city);
+        context.insert("State".to_string(), state);
+        context.insert("Zip_code".to_string(), zip_code);
+        context.insert("Job_title".to_string(), job_title);
+        context.insert("Employer".to_string(), employer);
+        context.insert("Start_date".to_string(), start_date);
+        context.insert("End_date".to_string(), end_date);
+        context.insert("Description".to_string(), description);
+        context.insert("School".to_string(), school);
+        context.insert("Gpa".to_string(), gpa);
+        context.insert("Field_of_study".to_string(), field_of_study);
+        context.insert("Graduation_date".to_string(), graduation_date);
+        context.insert("Languages".to_string(), languages);
+        context.insert("Softwares".to_string(), softwares);
+        context.insert("Other_tools".to_string(), other_tools);
+        Template::render("resume", &context)
+    } else {
+        Template::render("error_page", &context)
     }
-
-    Template::render("dashboard", &context)
 }
-
 
 #[get("/")]
 fn index() -> Template {
     let current_time = chrono::offset::Local::now();
-    let a = current_time.to_string(); 
+    let a = current_time.to_string();
     let s_slice = &a[..];
-    let sb: Vec<&str>  = s_slice.split(' ').collect();
+    let sb: Vec<&str> = s_slice.split(' ').collect();
     let date = sb.get(0).unwrap();
     //let date2 = date.clone();
-    let context: HashMap<&str, &str> = [("first name", "Jonathan")/*, ("date", date2)*/].iter().cloned().collect();
-    
+    let context: HashMap<&str, &str> = [("first name", "Jonathan") /*, ("date", date2)*/]
+        .iter()
+        .cloned()
+        .collect();
+
     Template::render("index", &context)
 }
-
-
-fn wow_helper(
-    h: &Helper,
-    _: &Handlebars,
-    _: &Context,
-    _: &mut RenderContext,
-    out: &mut dyn Output
-) -> HelperResult {
-    if let Some(param) = h.param(0) {
-        out.write("<b><i>")?;
-        out.write(&param.value().render())?;
-        out.write("</b></i>")?;
-        
-    }
-
-    Ok(())
-}
-
 
 #[catch(404)]
 fn not_found(req: &Request) -> Template {
@@ -330,59 +207,75 @@ fn not_found(req: &Request) -> Template {
     Template::render("error/404", &map)
 }
 
- 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
         .mount("/static", StaticFiles::from("static"))
-        .mount("/", routes![index, other::dashboard])
+        .mount(
+            "/",
+            routes![
+                index,
+                other::dashboard,
+                other::resume,
+                other::error_page,
+                other::about
+            ],
+        )
         .register(catchers![not_found])
-        .manage(ResumeCollection { list_of_resumes: Vec::<Resume>::new() })
+        .manage(ResumeCollection {
+            list_of_resumes: Vec::<Resume>::new(),
+        })
         .attach(Template::custom(|engines| {
-            engines.handlebars.register_helper("wow", Box::new(wow_helper));
-       
-        }))       
+            engines
+                .handlebars
+                .register_helper("wow", Box::new(harmandeep::wow_helper));
+        }))
 }
-
 
 fn main() {
     let helper_needed = 0;
 
     if helper_needed == 0 {
         rocket::ignite()
-        .mount("/", routes![index, publish_to_dashboard, other::dashboard])
-        .mount("/static", StaticFiles::from("static"))
-        .attach(Template::fairing())
-        .launch();    
-    }
-    else {
+            .mount(
+                "/",
+                routes![
+                    index,
+                    publish_to_resume,
+                    other::dashboard,
+                    other::resume,
+                    other::error_page,
+                    other::about
+                ],
+            )
+            .mount("/static", StaticFiles::from("static"))
+            .attach(Template::fairing())
+            .launch();
+    } else {
         rocket().launch();
     }
 }
 
-
 // --------------------- TESTING -----------------------
 
 macro_rules! dispatch {
-    ($method:expr, $path:expr, $test_fn:expr) => ({
+    ($method:expr, $path:expr, $test_fn:expr) => {{
         let client = Client::new(rocket()).unwrap();
         $test_fn(&client, client.req($method, $path).dispatch());
-    })
+    }};
 }
-
 
 // Imports specific to testing:
 
 //use super::{rocket, TemplateContext};
 
-use rocket::local::{Client, LocalResponse};
 use rocket::http::Method::*;
 use rocket::http::Status;
-
+use rocket::local::{Client, LocalResponse};
 
 /*
 TEST 1:
     Test the function to etc etc
-*/ 
+*/
 
 #[test]
 fn test_root() {
@@ -399,17 +292,20 @@ fn test_root() {
 
     // Check that other request methods are not accepted (and instead caught).
     for method in &[Post, Put, Delete, Options, Trace, Connect, Patch] {
-        dispatch!(*method, "/", |client: &Client, mut response: LocalResponse| {
-            let mut map = ::std::collections::HashMap::new();
-            map.insert("path", "/");
-            let expected = Template::show(client.rocket(), "error/404", &map).unwrap();
+        dispatch!(
+            *method,
+            "/",
+            |client: &Client, mut response: LocalResponse| {
+                let mut map = ::std::collections::HashMap::new();
+                map.insert("path", "/");
+                let expected = Template::show(client.rocket(), "error/404", &map).unwrap();
 
-            assert_eq!(response.status(), Status::NotFound);
-            assert_eq!(response.body_string(), Some(expected));
-        });
+                assert_eq!(response.status(), Status::NotFound);
+                assert_eq!(response.body_string(), Some(expected));
+            }
+        );
     }
 }
-
 
 /*
 Test 4: Tests the error catcher
@@ -417,12 +313,16 @@ Test 4: Tests the error catcher
 
 #[test]
 fn test_404() {
-    dispatch!(Get, "/hello/", |client: &Client, mut response: LocalResponse| {
-        let mut map = ::std::collections::HashMap::new();
-        map.insert("path", "/hello/");
+    dispatch!(
+        Get,
+        "/hello/",
+        |client: &Client, mut response: LocalResponse| {
+            let mut map = ::std::collections::HashMap::new();
+            map.insert("path", "/hello/");
 
-        let expected = Template::show(client.rocket(), "error/404", &map).unwrap();
-        assert_eq!(response.status(), Status::NotFound);
-        assert_eq!(response.body_string(), Some(expected));
-    });
+            let expected = Template::show(client.rocket(), "error/404", &map).unwrap();
+            assert_eq!(response.status(), Status::NotFound);
+            assert_eq!(response.body_string(), Some(expected));
+        }
+    );
 }

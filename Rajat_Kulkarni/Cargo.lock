@@ -506,6 +506,16 @@ dependencies = [
 [[package]]
 name = "harmandeep"
 version = "0.1.0"
+dependencies = [
+ "chrono",
+ "diesel",
+ "dotenv",
+ "handlebars 4.2.1",
+ "rocket",
+ "rocket_contrib",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "hashbrown"
