@@ -28,11 +28,26 @@ use rocket_contrib::serve::StaticFiles;
 use rocket::request::Form;
 
 struct Resume {
-    name: String,
-    lastname: String,
+    first_name: String,
+    last_name: String,
     phone_number: String,
     email: String,
-    company: String,
+    linkedin: String,
+    city: String,
+    state: String,
+    zip_code: String,
+    job_title: String,
+    employer: String,
+    start_date: String,
+    end_date: String,
+    description: String,
+    school: String,
+    gpa: String,
+    field_of_study: String,
+    graduation_date: String,
+    languages: String,
+    softwares: String,
+    other_tools: String,
 }
 
 struct ResumeCollection {
@@ -54,16 +69,16 @@ mod other {
     #[derive(serde::Serialize)]
 
     struct userInfo {
-        first_name: &'static str,
-        last_name: &'static str,
+        first_name_a: &'static str,
+        last_name_a: &'static str,
     }
 
 
     #[get("/dashboard")]
     pub fn dashboard() -> Template {
         Template::render("dashboard", &userInfo {
-            first_name: "john",
-            last_name: "Marty",
+            first_name_a: "john",
+            last_name_a: "Marty",
         })
     }
 }
@@ -87,55 +102,116 @@ fn count(resume_collection: State<ResumeCollection>) -> ResumeCollection {
 
 #[derive(FromForm)]
 struct Task {
-    name: String,
-    lastname: String,
+    first_name: String,
+    last_name: String,
     phone_number: String,
     email: String,
-    company: String,
+    linkedin: String,
+    city: String,
+    state: String,
+    zip_code: String,
+    job_title: String,
+    employer: String,
+    start_date: String,
+    end_date: String,
+    description: String,
+    school: String,
+    gpa: String,
+    field_of_study: String,
+    graduation_date: String,
+    languages: String,
+    softwares: String,
+    other_tools: String,
 }
 
 
 fn validate_user_input(task: Form<Task>) -> bool {
-    let name = task.name.clone();
-    let lastname = task.lastname.clone();
+    let first_name = task.first_name.clone();
+    let last_name = task.last_name.clone();
     let phone_number = task.phone_number.clone();
     let email = task.email.clone();
-    let company = task.company.clone();  
+    let linkedin = task.linkedin.clone();  
+    let city = task.city.clone(); 
+    let state = task.state.clone();
+    let zip_code = task.zip_code.clone();  
+    let job_title = task.job_title.clone(); 
+    let employer = task.employer.clone(); 
+    let start_date = task.start_date.clone(); 
+    let end_date = task.end_date.clone(); 
+    let description = task.description.clone(); 
+    let school = task.school.clone(); 
+    let gpa = task.gpa.clone(); 
+    let field_of_study = task.field_of_study.clone(); 
+    let graduation_date = task.graduation_date.clone(); 
+    let languages = task.languages.clone(); 
+    let softwares = task.softwares.clone(); 
+    let other_tools = task.other_tools.clone(); 
 
-    name != "name" && lastname != "lastname" && "phone_number" != phone_number
-       && email != "email" && company != "company"
+    first_name != "first name" && last_name != "last name" && "phone_number" != phone_number
+       && email != "email" 
 }
 
 
 #[post("/dashboard", data = "<task>")]
 fn publish_to_dashboard(task: Form<Task>) -> Template{ 
     print!("HIT");
-    print!("{}", task.name);
-    print!("{}", task.lastname);
+    print!("{}", task.first_name);
+    print!("{}", task.last_name);
     print!("{}", task.phone_number);
     print!("{}", task.email);
-    print!("{}", task.company);
+    print!("{}", task.linkedin);
+    print!("{}", task.city);
+    print!("{}", task.state);
+    print!("{}", task.zip_code);
+    print!("{}", task.job_title);
+    print!("{}", task.employer);
+    print!("{}", task.start_date);
+    print!("{}", task.end_date);
+    print!("{}", task.description);
+    print!("{}", task.school);
+    print!("{}", task.gpa);
+    print!("{}", task.field_of_study);
+    print!("{}", task.graduation_date);
+    print!("{}", task.languages);
+    print!("{}", task.softwares);
+    print!("{}", task.other_tools);
+
     
     let mut context = HashMap::new();
-    let name = task.name.clone();
-    let lastname = task.lastname.clone();
+    let first_name = task.first_name.clone();
+    let last_name = task.last_name.clone();
     let phone_number = task.phone_number.clone();
     let email = task.email.clone();
-    let company = task.company.clone();
+    let linkedin = task.linkedin.clone();  
+    let city = task.city.clone(); 
+    let state = task.state.clone();
+    let zip_code = task.zip_code.clone();  
+    let job_title = task.job_title.clone(); 
+    let employer = task.employer.clone(); 
+    let start_date = task.start_date.clone(); 
+    let end_date = task.end_date.clone(); 
+    let description = task.description.clone(); 
+    let school = task.school.clone(); 
+    let gpa = task.gpa.clone(); 
+    let field_of_study = task.field_of_study.clone(); 
+    let graduation_date = task.graduation_date.clone(); 
+    let languages = task.languages.clone(); 
+    let softwares = task.softwares.clone(); 
+    let other_tools = task.other_tools.clone(); 
 
     if validate_user_input(task) {
         context.insert(
-            "Name".to_string(),
-            name,
+            "First_name".to_string(),
+            first_name,
         );
     
         context.insert(
-            "LastName".to_string(),
-            lastname,
+            "Last_name".to_string(),
+            last_name,
         );
     
         context.insert(
-            "Phone_Number".to_string(),
+            "Phone_number".to_string(),
             phone_number,
         );
     
@@ -145,9 +221,70 @@ fn publish_to_dashboard(task: Form<Task>) -> Template{
         );
     
         context.insert(
-            "Company".to_string(),
-            company,
+            "Linkedin".to_string(),
+            linkedin,
         );
+        context.insert(
+            "City".to_string(),
+            city,
+        );
+        context.insert(
+            "State".to_string(),
+            state,
+        );
+        context.insert(
+            "Zip_code".to_string(),
+            zip_code,
+        );
+        context.insert(
+            "Job_title".to_string(),
+            job_title,
+        );
+        context.insert(
+            "Employer".to_string(),
+            employer,
+        );
+        context.insert(
+            "Start_date".to_string(),
+            start_date,
+        );
+        context.insert(
+            "End_date".to_string(),
+            end_date,
+        );
+        context.insert(
+            "Description".to_string(),
+            description,
+        );
+        context.insert(
+            "School".to_string(),
+            school,
+        );
+        context.insert(
+            "Gpa".to_string(),
+            gpa,
+        );
+        context.insert(
+            "Field_of_study".to_string(),
+            field_of_study,
+        );
+        context.insert(
+            "Graduation_date".to_string(),
+            graduation_date,
+        );
+        context.insert(
+            "Languages".to_string(),
+            languages,
+        );
+        context.insert(
+            "Softwares".to_string(),
+            softwares,
+        );
+        context.insert(
+            "Other_tools".to_string(),
+            other_tools,
+        );
+
     }
 
     Template::render("dashboard", &context)
@@ -162,7 +299,7 @@ fn index() -> Template {
     let sb: Vec<&str>  = s_slice.split(' ').collect();
     let date = sb.get(0).unwrap();
     //let date2 = date.clone();
-    let context: HashMap<&str, &str> = [("name", "Jonathan")/*, ("date", date2)*/].iter().cloned().collect();
+    let context: HashMap<&str, &str> = [("first name", "Jonathan")/*, ("date", date2)*/].iter().cloned().collect();
     
     Template::render("index", &context)
 }

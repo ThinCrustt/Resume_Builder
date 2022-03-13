@@ -67,10 +67,12 @@ li, a, button {
     color: white;
 }
 
-.item a:hover, .highlight {
+.item a:hover {
 color:black;
 }
-
+.highlight{
+    color: darkolivegreen;
+}
 #banner-content{
     display: flex;
     flex-direction: column;
