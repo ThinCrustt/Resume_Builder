@@ -26,8 +26,7 @@ use crate::handlebars::{Helper, Handlebars, Context, RenderContext, Output, Help
 
 use rocket::request::Form;
 
-
-
+// Struct to hold state
 struct Resume {
     name: String,
     description: String,
@@ -43,7 +42,6 @@ struct ResumeCollection {
 
 mod other {
     use rocket_contrib::templates::Template;
-    use std::collections::HashMap;
 
 
     #[derive(serde::Serialize)]
@@ -53,13 +51,20 @@ mod other {
 
 
     #[derive(serde::Serialize)]
-
     struct userInfo {
         first_name: &'static str,
         last_name: &'static str,
     }
 
-
+    /*
+    Function: dashboard()
+    Parameters: none
+    Returns: Template
+    Description: This is what is rendered when the "dashboard" link is pressed
+                 in the header. The context passed is purely for testing purposes.
+                 This is only used for the initial render, and whenever the user
+                 routes to localhost:[port]/dashboard.
+    */
     #[get("/dashboard")]
     pub fn dashboard() -> Template {
         Template::render("dashboard", &userInfo {
@@ -95,6 +100,15 @@ struct Task {
     company: String,
 }
 
+/*
+Function: validate_user_input()
+Parameters: task: Form<Task>
+Returns: bool
+Description: This is a function to validate the user input when a new
+             resume is being created. It takes in the user input, checks
+             to see if each part of the user input is valid, and returns
+             true/false.
+*/
 
 fn validate_user_input(task: Form<Task>) -> bool {
     let name = task.name.clone();
@@ -107,6 +121,16 @@ fn validate_user_input(task: Form<Task>) -> bool {
        && skills != "skills" && company != "company"
 }
 
+/*
+Function: publish_to_dashboard()
+Parameters: task: Form<Task>
+Returns: Template
+Description: Anytime the user submits a form to create a new resume, this function is 
+             called. The user input from the form is passed in. This function extracts
+             each part of the user input, validates it through a call to validate_user_input(),
+             and prepares the context. It re-renders the dashboard.hbs template, passing in
+             the relevant context object that has the information about the resumes.
+*/
 
 #[post("/dashboard", data = "<task>")]
 fn publish_to_dashboard(task: Form<Task>) -> Template{ 
@@ -154,6 +178,13 @@ fn publish_to_dashboard(task: Form<Task>) -> Template{
     Template::render("dashboard", &context)
 }
 
+/*
+Function: index()
+Parameters: none
+Returns: Template
+Description: This function is called whenever the user routes to localhost:[port]/.
+             It renders the index.hbs template.
+*/
 
 #[get("/")]
 fn index() -> Template {
@@ -168,6 +199,14 @@ fn index() -> Template {
     Template::render("index", &context)
 }
 
+/*
+Function: wow_helper
+Parameters: -
+Returns: Result
+Description: This is a handlebars helper, derived from Sergio Benitez at 
+             [post_link]. It acts as a function to bold specific text, and can be called from
+             any handlebars template. It is used in index.hbs.
+*/
 
 fn wow_helper(
     h: &Helper,
@@ -186,6 +225,13 @@ fn wow_helper(
     Ok(())
 }
 
+/*
+Function: not_found()
+Parameters: req: &Request
+Returns: Template
+Description: This function renders the 404 template when the user routes to
+             an invalid page. Obtained from Sergio Benitez at [post_link].
+*/
 
 #[catch(404)]
 fn not_found(req: &Request) -> Template {
