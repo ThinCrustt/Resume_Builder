@@ -159,8 +159,9 @@ p{
     padding: 1rem;
     flex-direction: column;
     flex: 50%;
+    max-width: 77%;
 }
-.form-item>input{
+.form-item>input, .fomr-item>textarea{
     width: 50%;
     height: 2rem;
     padding: 0.4rem 0.3rem;
@@ -178,6 +179,9 @@ fieldset{
     display: flex;
     justify-content: center;
 }
+.btn-small:hover{
+    color: black;
+}
 .category{
     background-color: darkolivegreen;
     color: white;
@@ -187,13 +191,22 @@ fieldset{
     align-items: center;
     width: 8%;
 }
+.mw-60{
+    min-width: 60%;
+}
+.mw-82{
+    max-width: 82% !important;
+}
 /* -------------- */
 /* Create resume */
 /* -------------- */
 
 section#resume{
-    padding: 0.5rem ;
+    padding: 0.5rem 0;
+    max-width: 50%;
+    margin: auto;
 }
+
 
 .res{
     padding: 0 8rem;
@@ -218,7 +231,9 @@ section#resume{
 .justify-sb{
     justify-content: space-between;
 }
-
+.align-ct{
+    align-items: center;
+}
 .grey-background{
     background-color: #363C46;
     color: white;
@@ -229,7 +244,18 @@ section#resume{
 }
 
 .vertical-content-15{
-    margin-left: 15rem
+    margin-left: 10rem
 }
 .vertical-content-9{
-    margin-left: 9rem
+    margin-left: 4rem
+}
+.details{
+    font-size: 0.8rem;
+}
+.wrap{
+    max-width: 450px;
+    word-break: break-word;
+}
+.w-35p{
+    width: 35%;
+}

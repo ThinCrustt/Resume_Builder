@@ -26,7 +26,8 @@ use crate::handlebars::{
     Context, Handlebars, Helper, HelperResult, JsonRender, Output, RenderContext, RenderError,
 };
 use rocket::request::Form;
-use rocket::Request;
+use rocket::request::{self, FromRequest, Request};
+use rocket::State;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::{handlebars, Template};
 
@@ -60,10 +61,10 @@ mod other {
             },
         )
     }
-    #[get("/resume")]
-    pub fn resume() -> Template {
+    #[get("/resume_page")]
+    pub fn resume_page() -> Template {
         Template::render(
-            "resume",
+            "resume_page",
             &userInfo {
                 first_name_a: "john",
                 last_name_a: "Marty",
@@ -127,9 +128,22 @@ fn publish_to_resume(task: Form<Task>) -> Template {
     print!("{}", task.gpa);
     print!("{}", task.field_of_study);
     print!("{}", task.graduation_date);
+    print!("{}", task.uschool);
+    print!("{}", task.ugpa);
+    print!("{}", task.ufield_of_study);
+    print!("{}", task.ugraduation_date);
     print!("{}", task.languages);
     print!("{}", task.softwares);
     print!("{}", task.other_tools);
+    print!("{}", task.project_title_1);
+    print!("{}", task.project_tech_1);
+    print!("{}", task.project_desc_1);
+    print!("{}", task.project_title_2);
+    print!("{}", task.project_tech_2);
+    print!("{}", task.project_desc_2);
+    print!("{}", task.project_title_3);
+    print!("{}", task.project_tech_3);
+    print!("{}", task.project_desc_3);
 
     let mut context = HashMap::new();
     let first_name = task.first_name.clone();
@@ -149,19 +163,28 @@ fn publish_to_resume(task: Form<Task>) -> Template {
     let gpa = task.gpa.clone();
     let field_of_study = task.field_of_study.clone();
     let graduation_date = task.graduation_date.clone();
+    let uschool = task.uschool.clone();
+    let ugpa = task.ugpa.clone();
+    let ufield_of_study = task.ufield_of_study.clone();
+    let ugraduation_date = task.ugraduation_date.clone();
     let languages = task.languages.clone();
     let softwares = task.softwares.clone();
     let other_tools = task.other_tools.clone();
+    let project_title_1 = task.project_title_1.clone();
+    let project_tech_1 = task.project_tech_1.clone();
+    let project_desc_1 = task.project_desc_1.clone();
+    let project_title_2 = task.project_title_2.clone();
+    let project_tech_2 = task.project_tech_2.clone();
+    let project_desc_2 = task.project_desc_2.clone();
+    let project_title_3 = task.project_title_3.clone();
+    let project_tech_3 = task.project_tech_3.clone();
+    let project_desc_3 = task.project_desc_3.clone();
 
     if harmandeep::validate_user_input(task) {
         context.insert("First_name".to_string(), first_name);
-
         context.insert("Last_name".to_string(), last_name);
-
         context.insert("Phone_number".to_string(), phone_number);
-
         context.insert("Email".to_string(), email);
-
         context.insert("Linkedin".to_string(), linkedin);
         context.insert("City".to_string(), city);
         context.insert("State".to_string(), state);
@@ -175,11 +198,39 @@ fn publish_to_resume(task: Form<Task>) -> Template {
         context.insert("Gpa".to_string(), gpa);
         context.insert("Field_of_study".to_string(), field_of_study);
         context.insert("Graduation_date".to_string(), graduation_date);
+        context.insert("uSchool".to_string(), uschool);
+        context.insert("uGpa".to_string(), ugpa);
+        context.insert("uField_of_study".to_string(), ufield_of_study);
+        context.insert("uGraduation_date".to_string(), ugraduation_date);
         context.insert("Languages".to_string(), languages);
         context.insert("Softwares".to_string(), softwares);
         context.insert("Other_tools".to_string(), other_tools);
-        Template::render("resume", &context)
+        context.insert("Project_title_1".to_string(), project_title_1);
+        context.insert("Project_tech_1".to_string(), project_tech_1);
+        context.insert("Project_desc_1".to_string(), project_desc_1);
+        context.insert("Project_title_2".to_string(), project_title_2);
+        context.insert("Project_tech_2".to_string(), project_tech_2);
+        context.insert("Project_desc_2".to_string(), project_desc_2);
+        context.insert("Project_title_3".to_string(), project_title_3);
+        context.insert("Project_tech_3".to_string(), project_tech_3);
+        context.insert("Project_desc_3".to_string(), project_desc_3);
+
+        Template::render("resume_page", &context)
     } else {
+        context.insert("First_name".to_string(), first_name);
+        context.insert("Last_name".to_string(), last_name);
+        context.insert("Phone_number".to_string(), phone_number);
+        context.insert("Email".to_string(), email);
+        context.insert("City".to_string(), city);
+        context.insert("State".to_string(), state);
+        context.insert("Zip_code".to_string(), zip_code);
+        context.insert("uSchool".to_string(), uschool);
+        context.insert("uGpa".to_string(), ugpa);
+        context.insert("uField_of_study".to_string(), ufield_of_study);
+        context.insert("uGraduation_date".to_string(), ugraduation_date);
+        context.insert("Languages".to_string(), languages);
+        context.insert("Softwares".to_string(), softwares);
+
         Template::render("error_page", &context)
     }
 }
@@ -215,7 +266,7 @@ fn rocket() -> rocket::Rocket {
             routes![
                 index,
                 other::dashboard,
-                other::resume,
+                other::resume_page,
                 other::error_page,
                 other::about
             ],
@@ -242,7 +293,7 @@ fn main() {
                     index,
                     publish_to_resume,
                     other::dashboard,
-                    other::resume,
+                    other::resume_page,
                     other::error_page,
                     other::about
                 ],

@@ -5,15 +5,53 @@
     <body>
         <main>
         <section id="navigation">
-                {{> navbar}} 
-            </section>
-            <section id="banner" style="
-    background-image: url(static/background1.jpg);">
-                <div>
-                    <h1>Resume fields missing or incorrect.</h1>
-                    <h2>Try Again</h2>
-                </div>
-            </section>
+            {{> navbar}} 
+        </section>
+        <section id="banner" style="background-image: url(static/background1.jpg);">
+            <div class="flex-col align-ct">
+                <h1>Compulsory fields of the resume are missing or incorrect!</h1>
+                {{#unless First_name}}
+                    <p>Missing first name</p>
+                {{/unless}}
+                {{#unless Last_name}}
+                    <p>Missing last name</p>
+                {{/unless}}
+                {{#unless Phone_number}}
+                    <p>Missing phone number</p>
+                {{/unless}}
+                {{#unless Email}}
+                    <p>Missing email</p>
+                {{/unless}}
+                {{#unless City}}
+                    <p>Missing city name</p>
+                {{/unless}}
+                {{#unless State}}
+                    <p>Missing state</p>
+                {{/unless}}
+                {{#unless Zip_code}}
+                    <p>Missing zip code</p>
+                {{/unless}}
+                {{#unless uSchool}}
+                    <p>Missing undergraduate school name</p>
+                {{/unless}}
+                {{#unless uGpa}}
+                    <p>Missing undergraduate GPA</p>
+                {{/unless}}
+                {{#unless uField_of_study}}
+                    <p>Missing undergraduate field of study</p>
+                {{/unless}}
+                {{#unless uGraduation_date}}
+                    <p>Missing undergraduate graduation date</p>
+                {{/unless}}
+                {{#unless Languages}}
+                    <p>Missing languages field</p>
+                {{/unless}}
+                {{#unless Softwares}}
+                    <p>Missing softwares field</p>
+                {{/unless}}
+                <button class="btn" onclick="history.back()">Try Again</button>
+            </div>
+        </section>
         </main>
     </body>
     <footer>
