@@ -122,5 +122,3 @@ pub fn wow_helper(
 
     Ok(())
 }
-
-

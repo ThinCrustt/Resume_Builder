@@ -22,12 +22,10 @@ use harmandeep::Task;
 //use rocket::response::Redirect;
 use std::collections::HashMap;
 
-
 use rocket::request::Form;
 use rocket::request::Request;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
-
 
 mod other {
     use rocket_contrib::templates::Template;
@@ -298,8 +296,6 @@ fn main() {
 
 // --------------------- TESTING -----------------------
 
-
-
 // Imports specific to testing:
 
 //use super::{rocket, TemplateContext};
@@ -308,12 +304,11 @@ TEST 1:
     Test the function to etc etc
 */
 macro_rules! dispatch {
-    ($method:expr, $path:expr, $test_fn:expr) => ({
+    ($method:expr, $path:expr, $test_fn:expr) => {{
         let client = rocket::local::Client::new(rocket()).unwrap();
         $test_fn(&client, client.req($method, $path).dispatch());
-    })
+    }};
 }
-
 
 /*
 Test 4: Tests the error catcher
