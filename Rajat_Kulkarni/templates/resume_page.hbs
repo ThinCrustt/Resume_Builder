@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+    {{> head}}
+    
+    <body>
+        <section id="navigation">
+                {{> navbar}} 
+        </section>
+            <section id="resume" style="background-image: url(static/background1.jpg);">
+            <div style="background-color: white;">
+                <div id="resume-header" class="flex-col grey-background res">
+                    <div class="flex-col">
+                        <h2>{{First_name}} {{Last_name}}</h2>
+                        <h3>{{Job_title}}</h3>
+                    </div>
+                    <div class="flex-row justify-sb">
+                        <div class="flex-col">
+                            <p class="details">{{Email}}</p>
+                            <p class="details">{{Linkedin}}</p>
+                        </div>
+                        <div class="flex-col">
+                            <p class="details">{{City}}, {{State}}</p>
+                            <p class="details">{{Phone_number}}</p>
+                        </div>
+                    </div>
+                </div>
+                {{#if School}}
+                    <div id="resume-edu" class="res-small">
+                        <div>
+                            <h3>Education(Graduate)</h3>
+                            <div class="flex-row">
+                                <div class="flex-row w-35p">
+                                    <span>{{Graduation_date}}</span>
+                                </div>
+                                <div class="flex-col">
+                                    <p>{{School}}</p>
+                                    <p>{{Field_of_study}}</p>
+                                    <p>GPA: {{Gpa}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
+                <div id="uresume-edu" class="res-small">
+                    <div>
+                        <h3>Education(Undergraduate)</h3>
+                        <div class="flex-row">
+                            <div class="flex-row w-35p">
+                                <span>{{uGraduation_date}}</span>
+                            </div>
+                            <div class="flex-col">
+                                <p>{{uSchool}}</p>
+                                <p>{{uField_of_study}}</p>
+                                <p>GPA: {{uGpa}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{#if Job_title}}
+                    <div id="resume-exp" class="res-small">
+                        <div>
+                            <h3>Experience</h3>
+                            <div class="flex-row">
+                                <div class="flex-row w-35p">
+                                    <span>{{Start_date}}</span>
+                                    <span>-</span>
+                                    <span>{{End_date}}</span>
+                                </div>
+                                <div class="flex-col">
+                                    <p>{{Job_title}}</p>
+                                    <p>{{Employer}}</p>
+                                    <p class="wrap">{{Description}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
+
+                <div id="resume-skills" class="res-small">
+                    <div>
+                        <h3>Skills</h3>
+                        <div class="flex-col">
+                            <div class="flex-row">
+                                 <div class="flex-col w-35p"><p class="">Languages</p></div> 
+                                  <p>{{Languages}}</p>
+                            </div>
+                            <div class="flex-row">
+                                 <div class="flex-col w-35p"><p class="">Softwares</p> </div> 
+                                 <p>{{Softwares}}</p>
+                            </div>
+                            {{#if Other_tools}}
+                                <div class="flex-row">
+                                    <div class="flex-col w-35p"><p class="">Other Tools</p></div> 
+                                    <p>{{Other_tools}}</p>
+                                </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+                {{#if Project_title_1 and Project_title_2 and Project_title_3}}
+                    <div id="resume-projects-1" class="res-small">
+                        <div>
+                            <h3>Projects</h3>
+                            <div class="flex-col">
+                                <div class="flex-row">
+                                    <div class="flex-col w-35p"><p class="">Title</p></div> 
+                                    <div class="flex-col"><p class="wrap">{{Project_title_1}}</p></div>
+                                
+                                </div>
+                                <div class="flex-row">
+                                    <div class="flex-col w-35p"><p class="">Technology</p></div> 
+                                    <div class="flex-col"><p class="wrap">{{Project_tech_1}}</p></div>
+                                
+                                </div>
+                                <div class="flex-row">
+                                    <div class="flex-col w-35p"><p class="">Description</p></div> 
+                                    <div class="flex-col"><p class="wrap">{{Project_desc_1}}</p></div>
+                                
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                    {{#if Project_title_2}}
+                        <div id="resume-projects-2" class="res-small">
+                            <div>
+                                <div class="flex-col">
+                                    <div class="flex-row">
+                                        <div class="flex-col w-35p"><p class="">Title</p></div> 
+                                        <div class="flex-col"> <p class="wrap">{{Project_title_2}}</p></div>
+                                    
+                                    </div>
+                                    <div class="flex-row">
+                                        <div class="flex-col w-35p"><p class="">Technology</p></div> 
+                                        <div class="flex-col"><p class="wrap">{{Project_tech_2}}</p></div>
+                                        
+                                    </div>
+                                    <div class="flex-row">
+                                        <div class="flex-col w-35p"><p class="">Description</p></div> 
+                                        <div class="flex-col"><p class="wrap">{{Project_desc_2}}</p></div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    {{/if}}
+                    {{#if Project_title_3}}
+                        <div id="resume-projects-3" class="res-small">
+                            <div>
+                                <div class="flex-col">
+                                    <div class="flex-row">
+                                        <div class="flex-col w-35p"><p class="">Title</p></div> 
+                                        <div class="flex-col"> <p class="wrap">{{Project_title_3}}</p></div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <div class="flex-col w-35p"><p class="">Technology</p></div> 
+                                        <div class="flex-col"><p class="wrap">{{Project_tech_3}}</p></div>
+                                    </div>
+                                    <div class="flex-row">
+                                        <div class="flex-col w-35p"><p class="">Description</p></div> 
+                                        <div class="flex-col"><p class="wrap">{{Project_desc_3}}</p></div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/if}}
+            </div>
+
+        </section>
+    </body>
+</html>

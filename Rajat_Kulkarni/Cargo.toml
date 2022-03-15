@@ -1,8 +1,22 @@
 [package]
-name = "Rajat_kulkarni"
+name = "server"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+rocket = { version = "0.4.10" }
+
+serde = { version = "1.0", features = ["derive"] }
+serde_json = {version = "1.0"}
+chrono = "0.4"
+handlebars = "4.2.1"
+diesel = { version = "1.4.4", features = ["postgres"] }
+dotenv = "0.15.0"
+harmandeep = {path = "harmandeep"}
+
+[dependencies.rocket_contrib]
+version = "*"
+default-features = false
+features = ["handlebars_templates", "tera_templates","serve"]

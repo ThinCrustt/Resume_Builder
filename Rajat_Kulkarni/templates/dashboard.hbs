@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  {{> head}}
+  <body>
+    <main>
+      <section id="navigation">
+          {{> navbar}} 
+      </section>
+      <section id="form-creation-module" style="
+    background-image: url(static/background1.jpg);">
+        <div id="form-information-text">
+          <h2>Let's Get Started</h2>
+          <p>Please enter the following information(Fields marked as * are compulsory.):</p>
+        </div>
+        
+        <form method="POST" action="/dashboard"  >
+          {{> personal}}  
+          {{> experience}}   
+          {{> education-graduate}}  
+          {{> education-undergraduate}}  
+          {{> skills}}
+          {{> projects}}
+        <br />
+        <div class="btn-container">
+            <input type="submit" value="Submit" class="btn-small" />
+        </div>
+      </form>
+      </section>
+    </main>
+  </body>
+  <footer>
+        <section>
+            <div id="footnote">
+                © 2021 Designed And Built by&nbsp;<span class="highlight"> Rajat Kulkarni & Harmandeep Singh</span>
+            </div>
+        </section>
+    </footer>
+</html>
+    
