@@ -9,6 +9,8 @@ Rajat Kulkarni
 
 ## Description
 
+BUILT WITH cargo 1.61.0-nightly (65c826642 2022-03-09)
+
 The Resume Builder web application allows users to create a personalized resume. The user can enter in their personal information, experience, education and skills, after which a resume containing that information will be generated.
 
 The project uses the Rocket framework, which is a web framework for Rust. It also utilizes templating through Handlebars, as well as a lot of CSS to style the site. 
