@@ -8,41 +8,6 @@ use crate::handlebars::{
 use rocket::request::Form;
 use rocket_contrib::templates::handlebars;
 
-pub struct Resume {
-    first_name: String,
-    last_name: String,
-    phone_number: String,
-    email: String,
-    linkedin: String,
-    city: String,
-    state: String,
-    zip_code: String,
-    job_title: String,
-    employer: String,
-    start_date: String,
-    end_date: String,
-    description: String,
-    school: String,
-    gpa: String,
-    field_of_study: String,
-    graduation_date: String,
-    uschool: String,
-    ugpa: String,
-    ufield_of_study: String,
-    ugraduation_date: String,
-    languages: String,
-    softwares: String,
-    other_tools: String,
-    project_title_1: String,
-    project_tech_1: String,
-    project_desc_1: String,
-    project_title_2: String,
-    project_tech_2: String,
-    project_desc_2: String,
-    project_title_3: String,
-    project_tech_3: String,
-    project_desc_3: String,
-}
 #[derive(FromForm)]
 pub struct Task {
     pub first_name: String,

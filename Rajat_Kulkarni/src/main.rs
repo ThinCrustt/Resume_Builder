@@ -16,28 +16,21 @@ References:
 extern crate rocket;
 
 extern crate harmandeep;
-use harmandeep::Resume;
+
 use harmandeep::Task;
 //use diesel::sql_types::Bool;
 //use rocket::response::Redirect;
 use std::collections::HashMap;
 
-use crate::handlebars::{
-    Context, Handlebars, Helper, HelperResult, JsonRender, Output, RenderContext, RenderError,
-};
-use rocket::request::Form;
-use rocket::request::{self, FromRequest, Request};
-use rocket::State;
-use rocket_contrib::serve::StaticFiles;
-use rocket_contrib::templates::{handlebars, Template};
 
-struct ResumeCollection {
-    list_of_resumes: Vec<Resume>,
-}
+use rocket::request::Form;
+use rocket::request::Request;
+use rocket_contrib::serve::StaticFiles;
+use rocket_contrib::templates::Template;
+
 
 mod other {
     use rocket_contrib::templates::Template;
-    use std::collections::HashMap;
 
     #[derive(serde::Serialize)]
     struct CurrentInfo {
@@ -46,7 +39,7 @@ mod other {
 
     #[derive(serde::Serialize)]
 
-    struct userInfo {
+    struct UserInfo {
         first_name_a: &'static str,
         last_name_a: &'static str,
     }
@@ -55,7 +48,7 @@ mod other {
     pub fn dashboard() -> Template {
         Template::render(
             "dashboard",
-            &userInfo {
+            &UserInfo {
                 first_name_a: "john",
                 last_name_a: "Marty",
             },
@@ -65,7 +58,7 @@ mod other {
     pub fn resume_page() -> Template {
         Template::render(
             "resume_page",
-            &userInfo {
+            &UserInfo {
                 first_name_a: "john",
                 last_name_a: "Marty",
             },
@@ -75,7 +68,7 @@ mod other {
     pub fn error_page() -> Template {
         Template::render(
             "error_page",
-            &userInfo {
+            &UserInfo {
                 first_name_a: "john",
                 last_name_a: "Marty",
             },
@@ -85,7 +78,7 @@ mod other {
     pub fn about() -> Template {
         Template::render(
             "about",
-            &userInfo {
+            &UserInfo {
                 first_name_a: "john",
                 last_name_a: "Marty",
             },
@@ -241,7 +234,7 @@ fn index() -> Template {
     let a = current_time.to_string();
     let s_slice = &a[..];
     let sb: Vec<&str> = s_slice.split(' ').collect();
-    let date = sb.get(0).unwrap();
+    let _date = sb.get(0).unwrap();
     //let date2 = date.clone();
     let context: HashMap<&str, &str> = [("first name", "Jonathan") /*, ("date", date2)*/]
         .iter()
@@ -272,9 +265,6 @@ fn rocket() -> rocket::Rocket {
             ],
         )
         .register(catchers![not_found])
-        .manage(ResumeCollection {
-            list_of_resumes: Vec::<Resume>::new(),
-        })
         .attach(Template::custom(|engines| {
             engines
                 .handlebars
@@ -308,55 +298,22 @@ fn main() {
 
 // --------------------- TESTING -----------------------
 
-macro_rules! dispatch {
-    ($method:expr, $path:expr, $test_fn:expr) => {{
-        let client = Client::new(rocket()).unwrap();
-        $test_fn(&client, client.req($method, $path).dispatch());
-    }};
-}
+
 
 // Imports specific to testing:
 
 //use super::{rocket, TemplateContext};
-
-use rocket::http::Method::*;
-use rocket::http::Status;
-use rocket::local::{Client, LocalResponse};
-
 /*
 TEST 1:
     Test the function to etc etc
 */
-
-#[test]
-fn test_root() {
-    // Check that the redirect works.
-    for method in &[Get, Head] {
-        dispatch!(*method, "/", |_: &Client, mut response: LocalResponse| {
-            assert_eq!(response.status(), Status::SeeOther);
-            assert!(response.body().is_none());
-
-            let location: Vec<_> = response.headers().get("Location").collect();
-            assert_eq!(location, vec!["/hello/Unknown"]);
-        });
-    }
-
-    // Check that other request methods are not accepted (and instead caught).
-    for method in &[Post, Put, Delete, Options, Trace, Connect, Patch] {
-        dispatch!(
-            *method,
-            "/",
-            |client: &Client, mut response: LocalResponse| {
-                let mut map = ::std::collections::HashMap::new();
-                map.insert("path", "/");
-                let expected = Template::show(client.rocket(), "error/404", &map).unwrap();
-
-                assert_eq!(response.status(), Status::NotFound);
-                assert_eq!(response.body_string(), Some(expected));
-            }
-        );
-    }
+macro_rules! dispatch {
+    ($method:expr, $path:expr, $test_fn:expr) => ({
+        let client = rocket::local::Client::new(rocket()).unwrap();
+        $test_fn(&client, client.req($method, $path).dispatch());
+    })
 }
+
 
 /*
 Test 4: Tests the error catcher
@@ -365,14 +322,14 @@ Test 4: Tests the error catcher
 #[test]
 fn test_404() {
     dispatch!(
-        Get,
+        rocket::http::Method::Get,
         "/hello/",
-        |client: &Client, mut response: LocalResponse| {
+        |client: &rocket::local::Client, mut response: rocket::local::LocalResponse| {
             let mut map = ::std::collections::HashMap::new();
             map.insert("path", "/hello/");
 
             let expected = Template::show(client.rocket(), "error/404", &map).unwrap();
-            assert_eq!(response.status(), Status::NotFound);
+            assert_eq!(response.status(), rocket::http::Status::NotFound);
             assert_eq!(response.body_string(), Some(expected));
         }
     );
