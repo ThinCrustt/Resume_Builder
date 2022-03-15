@@ -28,3 +28,10 @@ In our project proposal, we outlined that if possible, we would like to save eve
 ## What Worked/ Lessons Learned
 
 The majority of the project was spent learning and working with Rocket. This was a challenge, because it was something neither group member had seen before, and the concept of web development in Rust was new. However, at the end, we both feel like we have a solid command of Rocket, which will be useful for developing web applications in the future. 
+
+## What each of us worked on
+
+Harmandeep Singh: _lib.rs_, all _.hbs_ files, all _.css_ files
+Rajat Kulkarni: _main.rs_, started on _.hbs_ files
+
+
