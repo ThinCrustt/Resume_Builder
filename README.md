@@ -1,5 +1,8 @@
 # Rust_Final_Project: _Resume Builder_
 
+Note: there is an "unused" Cargo Clippy warning on line 360 that is not going away. It is related to one of our testing functions. I think it may be a bug; we got everything else passed for Cargo Clippy and Cargo fmt.
+
+
 Final project for Programming in Rust
 
 Authors:
