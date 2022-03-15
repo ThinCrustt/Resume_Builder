@@ -19,11 +19,6 @@ Upon successful launch, the web app will display the Home page. On the toolbar a
 
 ## Issues
 
-In our project proposal, we outlined that if possible, we would like to save every resume that was created through either Rocket State or Diesel, and maintain that state so that anytime the user navigates to "localhost:[port_number]/dashboard", the entire list of all the created resumes would be displayed. However, main issue we encountered was getting Diesel set up on our machines, which proved to be extremely buggy and slow. An attempt was made at utilizing Rocket State, and is not removed from the main.rs file (it is placed in comments). Regardless of this, we were able to get most of the features implemented.
+In our project proposal, we outlined that if possible, we would like to save every resume that was created through either Rocket State or Diesel, and maintain that state so that anytime the user navigates to "localhost:[port_number]/dashboard", the entire list of all the created resumes would be displayed. However, main issue we encountered was getting Diesel set up on our machines, which proved to be extremely buggy and slow. An attempt was made at utilizing Rocket State, and is not removed from the main.rs file (it is placed in comments). Regardless of this, we were able to get most of the features that we wanted implemented.
 
 
-## Control Flow
-
- give a general overview of how the project is laid out
-
- In _main.rs_, the Rocket serve
