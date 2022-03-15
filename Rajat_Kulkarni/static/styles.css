@@ -259,3 +259,8 @@ section#resume{
 .w-35p{
     width: 35%;
 }
+section#background-banner{
+    max-width: 70%;
+    margin: auto;
+    padding: 6rem;
+}

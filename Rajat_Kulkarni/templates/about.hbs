@@ -1,18 +1,26 @@
 <!doctype html>
 <html>
     {{> head}}
-    
     <body>
         <main>
-        <section id="navigation">
-                {{> navbar}} 
-            </section>
-            <section id="banner" style="
-    background-image: url(static/background1.jpg);">
-                <div>
-                    <h1>About</h1>
+        <section id="navigation">{{> navbar}} </section>
+        <section id="background-banner">
+            <div><h1>About</h1></div>
+            <div class="flex-row" style="justify-content: space-between;">
+                <div style="padding: 1rem 3rem 1rem 0;max-width: 50%;word-break: break-word;">
+                    <p>Resume Builder is a webtool that offers a fast and easy way to build a professional resume.
+                    Specially designed for graduate students, it is an attempt to help them be job-ready within a few clicks.
+                    It is both convenient and easy-to-use- contains a form to input all details that fall under personal, undergrad education,
+                    grad education, experience, projects, and skills categories and displays an eye-catching resume design.
+                    </p>
+                    <br>
+                    <h3>Technologies Used</h3>
+                    <p>The tool uses Rust and Rocket framework on the back-end and Handlebars pages coupled with css on the front-end.</p>
+                    <br>
                 </div>
-            </section>
+                <div><img src="static/resume_capture.JPG" alt="resume_prototype" width="350" style="max-width: 300px;"></div>
+            </div>
+        </section>
         </main>
     </body>
     <footer>
