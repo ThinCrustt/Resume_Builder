@@ -42,6 +42,15 @@ mod other {
         last_name_a: &'static str,
     }
 
+    /*
+    FUNCTION: dashboard()
+    PARAMETERS: none
+    RETURNS: Template
+    DESCRIPTION: this function handles the routing when the user navigates to 
+                 "localhost[port_number]/dashboard". It renders the dashboard 
+                 template.
+    */
+
     #[get("/dashboard")]
     pub fn dashboard() -> Template {
         Template::render(
@@ -52,6 +61,15 @@ mod other {
             },
         )
     }
+
+    /*
+    FUNCTION: resume_page()
+    PARAMETERS: none 
+    RETURNS: Template
+    DESCRIPTION: This function handles routing to "localhost[port_number]/resume". It renders
+                 the resume template.
+    */
+
     #[get("/resume_page")]
     pub fn resume_page() -> Template {
         Template::render(
@@ -62,6 +80,15 @@ mod other {
             },
         )
     }
+
+    /*
+    FUNCTION: error_page
+    PARAMETERS: none
+    RETURNS: Template
+    DESCRIPTION: This function handles any incorrect routes, or disallowed routes. it renders
+                 the 404 error template.
+    */
+
     #[get("/error_page")]
     pub fn error_page() -> Template {
         Template::render(
@@ -72,6 +99,14 @@ mod other {
             },
         )
     }
+
+    /*
+    FUNCTION: about()
+    PARAMETERS: none
+    RETURNS: Template
+    DESCRIPTION: This function handles routing to "localhost[port_number]/about".
+    */
+
     #[get("/about")]
     pub fn about() -> Template {
         Template::render(
@@ -84,6 +119,7 @@ mod other {
     }
 }
 
+// ATTEMPT FOR Rocket State:
 /*#[get("/count")]
 fn count(resume_collection: State<ResumeCollection>) -> ResumeCollection {
     let mut retrieved_resume_collection = Vec::<ResumeCollection>::new();
@@ -99,6 +135,16 @@ fn count(resume_collection: State<ResumeCollection>) -> ResumeCollection {
     temp_resume.company = "h".to_string();
 
 }*/
+
+/*
+FUNCTION: publish_to_resume
+PARAMETERS: Form<Task>
+RETURNS: Template
+DESCRIPTION: This function handles the POST request generated when the user 'submits' the form
+             to create a new resume. It renders the dashboard template, passing in the relevant
+             context struct.
+*/
+
 #[post("/dashboard", data = "<task>")]
 fn publish_to_resume(task: Form<Task>) -> Template {
     print!("HIT");
@@ -226,6 +272,14 @@ fn publish_to_resume(task: Form<Task>) -> Template {
     }
 }
 
+/*
+FUNCTION: index()
+PARAMETERS: none
+RETURNS: Template
+DESCRIPTION: This function handles any the routing to the home page. It is what is called
+             when Rocket is launched.
+*/
+
 #[get("/")]
 fn index() -> Template {
     let current_time = chrono::offset::Local::now();
@@ -241,6 +295,14 @@ fn index() -> Template {
 
     Template::render("index", &context)
 }
+
+/*
+FUNCTION: not_found()
+PARAMETERS: none
+RETURNS: Template
+DESCRIPTION: This function handles any of the incorrect routing. It renders the 
+             error/404 template. Function and template obtained from [4].
+*/
 
 #[catch(404)]
 fn not_found(req: &Request) -> Template {
@@ -295,14 +357,6 @@ fn main() {
 }
 
 // --------------------- TESTING -----------------------
-
-// Imports specific to testing:
-
-//use super::{rocket, TemplateContext};
-/*
-TEST 1:
-    Test the function to etc etc
-*/
 macro_rules! dispatch {
     ($method:expr, $path:expr, $test_fn:expr) => {{
         let client = rocket::local::Client::new(rocket()).unwrap();
@@ -311,7 +365,7 @@ macro_rules! dispatch {
 }
 
 /*
-Test 4: Tests the error catcher
+Test: Tests the error catcher
 */
 
 #[test]
