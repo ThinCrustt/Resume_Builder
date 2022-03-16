@@ -357,6 +357,7 @@ fn main() {
 }
 
 // --------------------- TESTING -----------------------
+#[cfg(test)]
 macro_rules! dispatch {
     ($method:expr, $path:expr, $test_fn:expr) => {{
         let client = rocket::local::Client::new(rocket()).unwrap();
